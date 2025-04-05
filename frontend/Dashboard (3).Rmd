@@ -134,10 +134,10 @@ input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
 top5_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of_week & is_peak == input$peak_bool) %>% head(5)
 ##############################################################################################################################
 
-# least_connected <- connectivity_data_map %>%
-#   arrange(Score) %>%
-#   head(5) %>%
-#   mutate(Score= round(Score,2))
+least_connected <- connectivity_data_map %>%
+  arrange(Score) %>%
+  head(5) %>%
+  mutate(Score= round(Score,2))
 
 most_vulnerable <- v_df %>%
   na.omit()%>% 
