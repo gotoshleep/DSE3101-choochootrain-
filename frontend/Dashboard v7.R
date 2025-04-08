@@ -179,8 +179,21 @@ ui <- dashboardPage(
                                              height = "600px")),
                 
                 box(width = 4, 
-                    title = "Top # stations(max 20):", background = "light-blue"
-                )
+                    title = "Top # stations(max 20):", background = "light-blue",
+                    numericInput(inputId = "top_number_c", 
+                                 label = "Top # stations(max 20):",
+                                 value = 5,
+                                 min = 0,    # Optional minimum value
+                                 max = 20,   # Maximum value enforced by the UI),
+                                 step = 1
+                    ),
+                    
+                    actionButton("update2", "Apply Metrics", icon = icon("sync"))
+                ),
+                
+                box(width = 4,
+                    title = "Bottom 5 Connectivity Stations",
+                    DTOutput("low_connectivity_table1"))
               )
       ),
       
@@ -189,9 +202,10 @@ ui <- dashboardPage(
                 box(width = 6,
                     title = "Top 5 Most Vulnerable Stations",
                     DTOutput("top_vulnerable_table")),
+                
                 box(width = 6,
                     title = "Top 5 Least Connected Stations",
-                    DTOutput("low_connectivity_table"))
+                    DTOutput("low_connectivity_table")),
               )
       )
   )
@@ -213,8 +227,8 @@ vul_data<-v_df %>% arrange(station, day_type,is_peak) %>% ## ensure that it is o
   mutate(status = paste0(day_type,is_peak)) %>%
   select(-day_type, -is_peak, -avg_score, -line_code, -X) %>%
   pivot_wider(names_from = status, values_from = vul_category) %>%
-  mutate(information = paste(station_code," ", station, 
-                             "<br>Vulnerability quantiles:<br>", 
+  mutate(information = paste("<h5><b>",station_code, station,"</b></h5>", 
+#                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
                              "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`
@@ -250,6 +264,7 @@ connect_data<-c_df %>%
 c_df <- left_join(x=c_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
 input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
 
+###initialise the bot 5 least connected stations. 
 bot5_connect <- c_df %>% arrange(Score) %>% head(5)
 ##############################################################################################################################
 
@@ -372,7 +387,34 @@ server <- function(input, output, session) {
       )
   })
   ################################################################################
+  ## Table(reactive) for TAB2 (connectivity map)
   ################################################################################
+  connectivity_reactive_table <- eventReactive(input$update2, {
+    c_df %>%
+      arrange(Score) %>%
+      head(input$top_number_c) %>%
+      select(station_code, stations.x, Score) %>%
+      mutate(Score = round(Score, 2)) %>%
+      rename("Station Code" = station_code,
+             "Station" = stations.x,
+             "Connectivity Score" = Score)
+  }, ignoreNULL = FALSE)  # Set to FALSE to run on app initialization
+  
+  output$low_connectivity_table1 <- renderDT({
+    connectivity_reactive_table() %>%
+      datatable(
+        options = list(
+          dom = 't', 
+          pageLength = 5,
+          columnDefs = list(
+            list(className = 'dt-center', targets = '_all')
+          )
+        ),
+        rownames = FALSE
+      )
+  })
+  
+  
   
   ################################################################################
   ## Table(top5 stations) for TAB3
@@ -387,8 +429,8 @@ server <- function(input, output, session) {
               options = list(dom = 't', pageLength = 5))
   })
   
-  #Top 5 most Vulnerable stations overall
-  output$top_vulnerable_table <- renderDT({
+  #bot 5 least connected stations overall
+  output$low_connectivity_table <- renderDT({
     data = most_vulnerable %>%
       select(station_code, station, mean_score) %>%
       rename("Station" = station,
@@ -419,6 +461,26 @@ server <- function(input, output, session) {
       )
   })
   
+  #action button updates the leaflet plot (for connectivity map)
+  observeEvent(input$update2, {
+    ###when the parameters are input, update the bottom 5 least connected stations 
+    bot_con <- c_df %>% arrange(Score) %>% head(input$top_number_c)
+    leafletProxy("connectivity_map") %>%  
+      clearMarkers() %>%      # Clear previous markers
+      addCircleMarkers(data = connect_data, 
+                       lat = ~latitude, 
+                       lng = ~longitude, 
+                       label = ~station_w_code, 
+                       popup = ~information,
+                       fillOpacity = 1,
+                       fillColor = ~ifelse(stations %in% bot_con$stations.x , "red","white"),
+                       opacity = 1, 
+                       color = "black", 
+                       radius = ~ifelse(stations %in% bot_con$stations.x, 6,4), 
+                       weight = 1.5 #controls the width of outer circle
+      )
+  })
+  
   output$data_table <- renderTable({
     data()  # Display current data
   })
@@ -427,4 +489,5 @@ server <- function(input, output, session) {
 
 
 shinyApp(ui = ui, server = server)
+
 
