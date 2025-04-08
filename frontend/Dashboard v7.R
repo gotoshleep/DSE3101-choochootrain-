@@ -16,7 +16,8 @@ ui <- dashboardPage(
   
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Home", tabName = "home", icon = icon("home")),
+      id = "tabs",
+      menuItem("Home", tabName = "welcome", icon = icon("home")),
       menuItem("Vulnerability Map", tabName = "map", icon = icon("exclamation-triangle")),
       menuItem("Connectivity Map", tabName = "map2", icon = icon("project-diagram")),
       menuItem("Risk Analysis", tabName = "analysis", icon = icon("chart-bar")),
@@ -27,114 +28,122 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$style(HTML("
-      
-        .welcome-container {
-          min-height: 80vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          padding: 30px;
+        .welcome-content { padding: 20px; line-height: 1.6; }
+        .tab-description { 
+          background-color: #f9f9f9;
+          border-left: 4px solid #3c8dbc;
+          padding: 15px;
+          margin-bottom: 20px;
         }
-        
-        .welcome-box {
-          background-color: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
-          backdrop-filter: blur(10px);
-          color: #2c3e50;
-        }
-
-        .welcome-title {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          font-size: 3rem;
-          font-weight: 700;
-          background: linear-gradient(to right, #3498db, #00aced);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 25px;
-        }
-        
-        .tab-item p {
-          margin-bottom: 15px;
-          font-size: 1.8rem;
-          transition: all 0.3s ease;
-        }
-        
-        #vulnerability-tab p:hover {
-          transform: translateX(8px);
-          color: #3498db;; 
-        }
-        
-        #connectivity-tab p:hover {
-          transform: translateX(8px);
-          color: #3498db;;
-        }
-        
-        #risk-tab p:hover {
-          transform: translateX(8px);
-          color: #3498db;;
-        }
-        
-        #predictors-tab p:hover {
-          transform: translateX(8px);
-          color: #3498db;;
-        }
-        
-        .welcome-footer {
-          margin-top: 30px;
-          font-style: italic;
-          color: #7f8c8d;
-          border-top: 1px dashed #bdc3c7;
-          padding-top: 20px;
-          font-size: 1.5rem;
-        }
-        
-        .external-link-button {
-          color: white;
-          border: none;
-          padding: 8px 15px;
+        .highlight-box {
+          background-color: #e7f4ff;
           border-radius: 5px;
-          cursor: pointer;
-          text-decoration: none !important;
-          font-size: 1.0rem;
-          transition: background-color 0.3s ease;
+          padding: 15px;
+          margin: 10px 0;
         }
-        
+        .tab-description {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border-left: 4px solid #3c8dbc;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      
+      .tab-description:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-left: 4px solid #2c3e50;
+        background-color: #f1f9ff;
+      }
+      
+      .tab-description h4 {
+        color: #3c8dbc;
+        transition: color 0.3s ease;
+      }
+      
+      .tab-description:hover h4 {
+        color: #2c3e50;
+      }
+      
+      .tab-description .fa {
+        transition: transform 0.3s ease;
+      }
+      
+      .tab-description:hover .fa {
+        transform: scale(1.1);
+      }
+      
+      /* Link styling */
+      .tab-link {
+        display: inline-block;
+        margin-top: 8px;
+        color: #3c8dbc;
+        font-weight: bold;
+        transition: all 0.2s ease;
+      }
+      
+      .tab-link:hover {
+        color: #e74c3c;
+        text-decoration: none;
+        transform: translateX(3px);
+      }
+      ")),
+      tags$script(HTML("
+      $(document).on('click', '#vulnerability_desc', function() {
+        Shiny.setInputValue('nav_to', 'map');
+      });
+      $(document).on('click', '#connectivity_desc', function() {
+        Shiny.setInputValue('nav_to', 'map2');
+      });
+      $(document).on('click', '#analysis_desc', function() {
+        Shiny.setInputValue('nav_to', 'analysis');
+      });
       "))
     ),
     
     tabItems(
-      tabItem(tabName = "home",
-              div(class = "welcome-container",
-                  div(class = "welcome-box",
-                      div(class = "welcome-title", "Welcome!"),
-                      div(class = "welcome-text",
-                          p("This dashboard helps visualize and analyze MRT station vulnerability and connectivity in Singapore"),
-                          p("Explore the following sections:"),
-                          div(class = "tab-item", id = "vulnerability-tab",
-                            p(strong("Vulnerability Map:"), "View stations based on risk of breakdowns")
-                          ),
-                          div(class = "tab-item", id = "connectivity-tab",
-                            p(strong("Connectivity Map:"), "Explore how well-connected each station is")
-                          ),
-                          div(class = "tab-item", id = "risk-tab",
-                            p(strong("Risk Analysis:"), "Get a quick overview of key stations needing attention")
-                          ),
-                          div(class = "tab-item", id = "predictors-tab",
-                              p(strong("Important Predictors:"), "Find out more about key variables")
-                          ),
-                      div(class = "welcome-footer",
-                          "Built for insight-driven and resilient transport planning",
-                          tags$div(class = "external-link-button",
-                                   tags$a(href = "https://github.com/gotoshleep/DSE3101-choochootrain-.git",
-                                          target = "_blank",
-                                          class = "btn btn-primary",
-                                          "Go to our Github Website"))
-                      )
-                      
-                )
+      # Welcome Tab
+      tabItem(
+        tabName = "welcome",
+        div(class = "welcome-content",
+            h2("Welcome!"),
+            div(class = "highlight-box",
+                p("This dashboard helps visualize and analyze MRT station vulnerability and connectivity in Singapore"),
+                tags$ul(
+                  tags$li("Visualize station risk factors"),
+                  tags$li("Identify connectivity patterns"),
+                  tags$li("Interactive exploration tools")
+                ),
+                tags$div(class = "external-link-button",
+                         tags$a(href = "https://github.com/gotoshleep/DSE3101-choochootrain-.git",
+                                target = "_blank",
+                                class = "btn btn-primary",
+                                "Go to our Github Website"))
+            ),
+            
+            h3("Dashboard Sections"),
+            
+            div(class = "tab-description", id = "vulnerability_desc",
+                h4(icon("exclamation-triangle"), " Vulnerability Map"),
+                p("View stations based on risk of breakdowns.")
+            ),
+            
+            div(class = "tab-description", id = "connectivity_desc",
+                h4(icon("project-diagram"), " Connectivity Map"),
+                p("Explore how well-connected each station is.")
+            ),
+            
+            div(class = "tab-description", id = "analysis_desc",
+                h4(icon("chart-bar"), " Risk Analysis"),
+                p("Get a quick overview of key stations needing attention.")
+            ),
+            
+            div(class = "tab-description",
+                h4(icon("key"), "Important Predictors"),
+                p("Find out more about key variables")
             )
-      )),
-
+        )
+      ),
     
       tabItem(tabName = "map",
               fluidRow(
@@ -205,7 +214,7 @@ ui <- dashboardPage(
                 
                 box(width = 6,
                     title = "Top 5 Least Connected Stations",
-                    DTOutput("low_connectivity_table")),
+                    DTOutput("low_connectivity_table"))
               )
       )
   )
@@ -227,7 +236,7 @@ vul_data<-v_df %>% arrange(station, day_type,is_peak) %>% ## ensure that it is o
   mutate(status = paste0(day_type,is_peak)) %>%
   select(-day_type, -is_peak, -avg_score, -line_code, -X) %>%
   pivot_wider(names_from = status, values_from = vul_category) %>%
-  mutate(information = paste("<h5><b>",station_code, station,"</b></h5>", 
+  mutate(information = paste("<h5 style='margin-bottom:2px'><b>",station_code, station,"</b></h5>", 
 #                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
@@ -255,7 +264,7 @@ connect_data<-c_df %>%
   ungroup() %>%
   mutate(Score = as.numeric(Score)*5) %>%
   mutate(station_w_code = paste(station_code, stations)) %>%
-  mutate(information = paste(station_w_code,
+  mutate(information = paste("<b>",station_w_code,"</b>",
                              "<br>Connectivity Score:<br>", Score
   )) %>% #create data for the pop up
   inner_join(y = latlng_data, by = "stations") #add lat long data to vulnerability data
@@ -282,6 +291,10 @@ most_vulnerable <- v_df %>%
   mutate(mean_score = round(mean_score,2))
 
 server <- function(input, output, session) {
+  
+  observeEvent(input$nav_to, {
+    updateTabItems(session, "tabs", input$nav_to)
+  })
   
   output$vulnerability_map <- renderLeaflet({
     
@@ -489,5 +502,3 @@ server <- function(input, output, session) {
 
 
 shinyApp(ui = ui, server = server)
-
-
