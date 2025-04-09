@@ -426,7 +426,7 @@ server <- function(input, output, session) {
     vulnerable_reactive_table() %>%
       datatable(
         options = list(
-          dom = 't', 
+          dom = 'tp', 
           pageLength = 5,
           columnDefs = list(
             list(className = 'dt-center', targets = '_all')
@@ -453,7 +453,7 @@ server <- function(input, output, session) {
     connectivity_reactive_table() %>%
       datatable(
         options = list(
-          dom = 't', 
+          dom = 'tp', 
           pageLength = 5,
           columnDefs = list(
             list(className = 'dt-center', targets = '_all')
