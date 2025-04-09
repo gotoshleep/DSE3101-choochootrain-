@@ -20,8 +20,8 @@ ui <- dashboardPage(
       menuItem("Home", tabName = "welcome", icon = icon("home")),
       menuItem("Vulnerability Map", tabName = "map", icon = icon("exclamation-triangle")),
       menuItem("Connectivity Map", tabName = "map2", icon = icon("project-diagram")),
-      menuItem("Risk Analysis", tabName = "analysis", icon = icon("chart-bar")),
-      menuItem("Important Predictors", tabname = "predictors", icon = icon("key"))
+      menuItem("Risk Analysis", tabName = "analysis", icon = icon("chart-bar"))
+      # ,menuItem("Important Predictors", tabname = "predictors", icon = icon("key"))
     )
   ),
   
@@ -87,6 +87,49 @@ ui <- dashboardPage(
         text-decoration: none;
         transform: translateX(3px);
       }
+      .analysis-methodology-content {
+        padding: 20px;
+            }
+      .dataTables_length {
+        float: left !important;
+        margin-right: 20px;
+      }
+      .dataTables_filter {
+        float: right !important;
+      }
+  
+      .methodology-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        height: 100%;
+      }
+      
+      .model-details {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+      
+      .combined-risk-section {
+        background-color: #f1f8ff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+      
+      .box .fa {
+        margin-right: 8px;
+      }
+      
+      @media (max-width: 768px) {
+        .methodology-card {
+          margin-bottom: 15px;
+        }
+      }
       ")),
       tags$script(HTML("
       $(document).on('click', '#vulnerability_desc', function() {
@@ -136,12 +179,13 @@ ui <- dashboardPage(
             div(class = "tab-description", id = "analysis_desc",
                 h4(icon("chart-bar"), " Risk Analysis"),
                 p("Get a quick overview of key stations needing attention.")
-            ),
-            
-            div(class = "tab-description",
-                h4(icon("key"), "Important Predictors"),
-                p("Find out more about key variables")
             )
+            # ,
+            # 
+            # div(class = "tab-description",
+            #     h4(icon("key"), "Important Predictors"),
+            #     p("Find out more about key variables")
+            # )
         )
       ),
     
@@ -176,7 +220,7 @@ ui <- dashboardPage(
                 ),
                 
                 box(width = 4,
-                    title = "Top 5 Vulnerable Stations",
+                    title = "Top Vulnerable Stations",
                     DTOutput("top_vulnerable_table1"))
               )
       ),
@@ -201,21 +245,75 @@ ui <- dashboardPage(
                 ),
                 
                 box(width = 4,
-                    title = "Bottom 5 Connectivity Stations",
+                    title = "Bottom Connectivity Stations",
                     DTOutput("low_connectivity_table1"))
               )
       ),
       
-      tabItem(tabName = "analysis",
-              fluidRow(
-                box(width = 6,
-                    title = "Top 5 Most Vulnerable Stations",
-                    DTOutput("top_vulnerable_table")),
-                
-                box(width = 6,
-                    title = "Top 5 Least Connected Stations",
-                    DTOutput("low_connectivity_table"))
+      tabItem(
+        tabName = "analysis",
+        div(class = "analysis-methodology-content",
+            
+            h2(icon("chart-bar"), " Risk Analysis Tables"),
+            fluidRow(
+              box(width = 6, 
+                  title = "Table of Most Vulnerable Stations",
+                  status = "danger",
+                  solidHeader = TRUE,
+                  DTOutput("top_vulnerable_table"),
+                  footer = "Higher scores indicate greater vulnerability risk"
+              ),
+              box(width = 6,
+                  title = "Table of Least Connected Stations", 
+                  status = "warning",
+                  solidHeader = TRUE,
+                  DTOutput("low_connectivity_table"),
+                  footer = "Lower scores indicate poorer connectivity"
               )
+            ),
+            
+            h2(icon("book"), " Important Predictors"),
+            fluidRow(
+              # Vulnerability Methodology
+              column(width = 6,
+                     div(class = "methodology-card",
+                         h3(icon("exclamation-triangle"), " Vulnerability Scoring"),
+                         div(class = "model-details",
+                             h4("XGBoost Selected Variables:"),
+                             tags$ul(
+                               tags$li(tags$strong("riders_per_station"), " - Passenger Volume"),
+                               tags$li(tags$strong("average_monthly_rainfall.mm."), " - Weather Impact"),
+                               tags$li(tags$strong("Line codes"), " - Infrastructure age/type"),
+                               tags$li(tags$strong("is_morning_peak"), " - Time Period")
+                             )
+                         )
+                     )
+              ),
+              
+              # Connectivity Methodology
+              column(width = 6,
+                     div(class = "methodology-card",
+                         h3(icon("project-diagram"), " Connectivity Scoring"),
+                         div(class = "model-details",
+                             h4("Key Variables:"),
+                             tags$ul(
+                               tags$li(tags$strong("Walking time (≤15 mins)"), " - 30% weight"),
+                               tags$li(tags$strong("Shared bus services"), " - 20% weight"),
+                               tags$li(tags$strong("Accessible stations"), " - 15% weight"),
+                               tags$li(tags$strong("Interchange status"), " - 35% weight")
+                             )
+                         ),
+                         h4("Connectivity Definition:"),
+                         p("Well-connected stations provide:"),
+                         tags$ul(
+                           tags$li("Bus services within 500m walking distance"),
+                           tags$li("≤15 min walking paths to other MRT stations"),
+                           tags$li("Bus routes with ≤2km connections to alternate stations")
+                         )
+                     )
+              )
+            )
+        )
       )
   )
 )
@@ -315,15 +413,13 @@ bot5_connect <- c_df %>% arrange(Score) %>% head(5)
 
 least_connected <- c_df %>%
   arrange(Score) %>%
-  head(5) %>%
   mutate(Score= round(Score,2))
 
 most_vulnerable <- v_df %>%
-  na.omit()%>% 
+  # na.omit()%>% 
   group_by(stations, station_code) %>% 
   summarize(mean_score = mean(avg_score)) %>%
   arrange(desc(mean_score))%>%
-  head(5) %>%
   mutate(mean_score = round(mean_score,2))
 
 server <- function(input, output, session) {
@@ -410,17 +506,28 @@ server <- function(input, output, session) {
   vulnerable_reactive_table <- eventReactive(input$update, {
     req(input$day_of_week, input$peak_bool)
     
-    v_df %>%
+    vul_data <- v_df %>%
       filter(day_type == input$day_of_week, 
              is_peak == input$peak_bool) %>%
       arrange(desc(avg_score)) %>%
       head(input$top_number) %>%
       select(station_code, stations, avg_score) %>%
-      mutate(avg_score = round(avg_score, 2)) %>%
+      mutate(avg_score = round(avg_score, 2))
+    
+    rider_vul_data <- read.csv("ridership_by_stations.csv") %>%
+      filter(DAY_TYPE == input$day_of_week, 
+             is_peak == input$peak_bool) %>%
+      select(stations, AVG_RIDERS) %>%
+      mutate(AVG_RIDERS = round(AVG_RIDERS))
+    
+    left_join(vul_data, rider_vul_data, by = "stations") %>%
       rename("Station Code" = station_code,
              "Station" = stations,
-             "Vulnerability Score" = avg_score)
-  }, ignoreNULL = FALSE)  # Set to FALSE to run on app initialization
+             "Vulnerability Score" = avg_score,
+             "Avg Riders" = AVG_RIDERS) %>%
+      arrange(desc(`Vulnerability Score`)) %>%
+      unique()
+  }, ignoreNULL = FALSE)
   
   output$top_vulnerable_table1 <- renderDT({
     vulnerable_reactive_table() %>%
@@ -438,8 +545,10 @@ server <- function(input, output, session) {
   ################################################################################
   ## Table(reactive) for TAB2 (connectivity map)
   ################################################################################
+  
   connectivity_reactive_table <- eventReactive(input$update2, {
-    c_df %>%
+    
+    con_data <- c_df %>%
       arrange(Score) %>%
       head(input$top_number_c) %>%
       select(station_code, stations, Score) %>%
@@ -447,7 +556,19 @@ server <- function(input, output, session) {
       rename("Station Code" = station_code,
              "Station" = stations,
              "Connectivity Score" = Score)
-  }, ignoreNULL = FALSE)  # Set to FALSE to run on app initialization
+    
+    rider_con_data <- read.csv("ridership_by_stations.csv") %>%
+      select(stations, AVG_RIDERS) %>%
+      mutate(AVG_RIDERS = round(AVG_RIDERS))
+    
+    left_join(con_data, rider_con_data, by = c("Station" = "stations")) %>%
+      group_by(`Station Code`, Station, `Connectivity Score`) %>%
+      summarize(`Avg Riders` = round(mean(AVG_RIDERS, na.rm = TRUE)),
+                .groups = "drop") %>%
+      arrange(`Connectivity Score`) %>%
+      unique()
+  
+  }, ignoreNULL = FALSE)
   
   output$low_connectivity_table1 <- renderDT({
     connectivity_reactive_table() %>%
@@ -463,29 +584,38 @@ server <- function(input, output, session) {
       )
   })
   
-  
-  
   ################################################################################
   ## Table(top5 stations) for TAB3
   ################################################################################
-  #Top 5 most Vulnerable stations overall
+  # Top Vulnerable stations overall
   output$top_vulnerable_table <- renderDT({
     data = most_vulnerable %>%
       select(station_code, stations, mean_score) %>%
       rename("Station" = stations,
              "Station_Code" = station_code)
     datatable(data,
-              options = list(dom = 't', pageLength = 5))
+              options = list(
+                dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
+                pageLength = 5,
+                lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
+                pagingType = "numbers"  # Shows page numbers instead of simple next/previous
+              ))
   })
-
-  #Top 5 Least Connected Stations
+  
+  
+  #Top Least Connected Stations
   output$low_connectivity_table <- renderDT({
     data = least_connected %>%
       select(station_code, stations, Score) %>%
       rename("Station" = stations,
              "Station_Code" = station_code)
     datatable(data,
-              options = list(dom = 't', pageLength = 5))
+              options = list(
+                dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
+                pageLength = 5,
+                lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
+                pagingType = "numbers"  # Shows page numbers instead of simple next/previous
+              ))
   })
   ################################################################################
   ################################################################################
@@ -534,7 +664,5 @@ server <- function(input, output, session) {
     data()  # Display current data
   })
 }
-
-
 
 shinyApp(ui = ui, server = server)
