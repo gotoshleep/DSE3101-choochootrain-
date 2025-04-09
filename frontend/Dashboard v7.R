@@ -432,21 +432,21 @@ server <- function(input, output, session) {
   ################################################################################
   ## Table(top5 stations) for TAB3
   ################################################################################
-  #Top 5 Least Connected Stations
-  output$low_connectivity_table <- renderDT({
-    data = least_connected %>%
-      select(station_code, stations, Score) %>%
-      rename("Station" = stations,
+  #Top 5 most Vulnerable stations overall
+  output$top_vulnerable_table <- renderDT({
+    data = most_vulnerable %>%
+      select(station_code, station, mean_score) %>%
+      rename("Station" = station,
              "Station_Code" = station_code)
     datatable(data,
               options = list(dom = 't', pageLength = 5))
   })
-  
-  #bot 5 least connected stations overall
+
+  #Top 5 Least Connected Stations
   output$low_connectivity_table <- renderDT({
-    data = most_vulnerable %>%
-      select(station_code, station, mean_score) %>%
-      rename("Station" = station,
+    data = least_connected %>%
+      select(station_code, stations.x, Score) %>%
+      rename("Station" = stations.x,
              "Station_Code" = station_code)
     datatable(data,
               options = list(dom = 't', pageLength = 5))
