@@ -231,19 +231,40 @@ mrtline_df <- df %>% st_zm(drop = T, what = "ZM") %>%
 #thank you train nerd ily 
 
 v_df <- read.csv("vul_scores_time.csv")
-latlng_data <- read_xlsx("MRT_DATA.xlsx")
-vul_data<-v_df %>% arrange(station, day_type,is_peak) %>% ## ensure that it is ordered by station_code, then weekday then peak status 
+latlng_data <- read_xlsx("MRT_DATA.xlsx") %>% select(-stations)
+vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is ordered by station_code, then weekday then peak status 
   mutate(status = paste0(day_type,is_peak)) %>%
-  select(-day_type, -is_peak, -avg_score, -line_code, -X) %>%
+#  group_by(stations) %>% mutate(number = n()) %>% ungroup() %>%
+  select(station_code, stations, vul_category, status, line_code) %>%
+  mutate(colour = case_when(
+    line_code == "CCL" ~ "orange",
+    line_code == "TEL" ~ "saddlebrown",
+    line_code == "DTL" ~ "darkslateblue",
+    line_code == "EWL" ~ "mediumseagreen",
+    line_code == "NEL" ~ "darkmagenta",
+    line_code == "NSL" ~ "orangered"
+  )) %>% ##giving colour to each line
   pivot_wider(names_from = status, values_from = vul_category) %>%
-  mutate(information = paste("<h5 style='margin-bottom:2px'><b>",station_code, station,"</b></h5>", 
+  mutate(information = paste0("<h5 style='margin-bottom:2px'><b><span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",station_code,"</span> ", stations,"</b></h5>", 
 #                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
                              "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`
   )) %>% #create data for the pop up
-  mutate(station_w_code = paste(station_code," ", station))%>%
-  left_join(y = latlng_data, by = "station_code") #add lat long data to vulnerability data
+  left_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data 
+  select(-WEEKDAY0, -WEEKDAY1, -`WEEKENDS/HOLIDAY0` ) %>%
+  arrange(stations) %>%
+  group_by(stations) %>%
+  mutate(stationcode_w_colour = 
+           paste0("<span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",
+                  station_code,"</span> ")) %>% ##surround station codes with html that changes its colour and has borders 
+  summarise(
+    across(where(is.numeric), ~mean(., na.rm = TRUE)),
+    across(station_code, ~paste(., collapse = "/")),
+    across(information, ~paste(., collapse = "<br>")),
+    across(stationcode_w_colour, ~paste(., collapse = " "))
+  ) %>% ##combine interchanges
+  mutate(station_w_code = paste(stationcode_w_colour, stations))
 
 v_df <- left_join(x=v_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
 input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
@@ -255,19 +276,34 @@ top_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of
 ####################################Connectivity map####################################
 c_df <- read.csv("connectivity_score.csv")
 connect_data<-c_df %>%
-  select(station_code, stations, Score) %>%
+  select(station_code, stations, Score, line_code) %>%
+  inner_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data
+  mutate(colour = case_when(
+    line_code == "CCL" ~ "orange",
+    line_code == "TEL" ~ "saddlebrown",
+    line_code == "DTL" ~ "darkslateblue",
+    line_code == "EWL" ~ "mediumseagreen",
+    line_code == "NEL" ~ "darkmagenta",
+    line_code == "NSL" ~ "orangered"
+  )) %>% ##giving colour to each line
+  mutate(Score = round(Score,3)) %>% ## separated from previous for clarity
   group_by(stations) %>% 
+  mutate(stationcode_w_colour = 
+           paste0("<span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",
+                  station_code,"</span> ")) %>%
   summarize(
     Score = mean(Score),
-    across(station_code, ~paste(., collapse = "/")) 
-  ) %>%
+    across(station_code, ~paste(., collapse = "/")),
+    across(stationcode_w_colour, ~paste(., collapse = " ")),
+    across(c(latitude, longitude), ~mean(.)),
+    across(colour, ~first(.))
+    )%>%
   ungroup() %>%
   mutate(Score = as.numeric(Score)*5) %>%
-  mutate(station_w_code = paste(station_code, stations)) %>%
-  mutate(information = paste("<b>",station_w_code,"</b>",
-                             "<br>Connectivity Score:<br>", Score
-  )) %>% #create data for the pop up
-  inner_join(y = latlng_data, by = "stations") #add lat long data to vulnerability data
+  mutate(station_w_code = paste(stationcode_w_colour, stations)) %>%
+  mutate(information = paste0("<h5 style='margin-bottom:2px'><b>",stationcode_w_colour, stations,"</b></h5>",
+                             "Connectivity Score:<br>", Score
+  ))#create data for the pop up
 
 
 c_df <- left_join(x=c_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
@@ -284,7 +320,7 @@ least_connected <- c_df %>%
 
 most_vulnerable <- v_df %>%
   na.omit()%>% 
-  group_by(station, station_code) %>% 
+  group_by(stations, station_code) %>% 
   summarize(mean_score = mean(avg_score)) %>%
   arrange(desc(mean_score))%>%
   head(5) %>%
@@ -306,16 +342,16 @@ server <- function(input, output, session) {
       addPolylines(data = mrtline_df, 
                    opacity = 1, 
                    color = ~line_color) %>% #add the mrt track lines
-      addCircleMarkers(data = vul_data, 
-                       lat = ~latitude, 
-                       lng = ~longitude, 
-                       label = ~station_w_code, 
+      addCircleMarkers(data = vul_data,
+                       lat = ~latitude,
+                       lng = ~longitude,
+                       label = ~station_w_code %>% lapply(htmltools::HTML), 
                        popup = ~information,
                        fillOpacity = 1,
-                       fillColor = ~ifelse(station %in% top_vul$station , "red","white"),
+                       fillColor = ~ifelse(stations %in% top_vul$stations , "red","white"),
                        opacity = 1, 
                        color = "black", 
-                       radius = ~ifelse(station %in% top_vul$station , 6,4), 
+                       radius = ~ifelse(stations %in% top_vul$stations , 6,4), 
                        weight = 1.5 #controls the width of outer circle
       ) 
   })
@@ -332,13 +368,13 @@ server <- function(input, output, session) {
       addCircleMarkers(data = connect_data, 
                        lat = ~latitude, 
                        lng = ~longitude, 
-                       label = ~station_w_code, 
+                       label = ~station_w_code %>% lapply(htmltools::HTML), 
                        popup = ~information,
                        fillOpacity = 1,
-                       fillColor = ~ifelse(stations %in% bot5_connect$stations.x , "red","white"),
+                       fillColor = ~ifelse(stations %in% bot5_connect$stations , "red","white"),
                        opacity = 1, 
                        color = "black", 
-                       radius = ~ifelse(stations %in% bot5_connect$stations.x, 6,4), 
+                       radius = ~ifelse(stations %in% bot5_connect$stations, 6,4), 
                        weight = 1.5 #controls the width of outer circle
       ) 
   })
@@ -379,10 +415,10 @@ server <- function(input, output, session) {
              is_peak == input$peak_bool) %>%
       arrange(desc(avg_score)) %>%
       head(input$top_number) %>%
-      select(station_code, station, avg_score) %>%
+      select(station_code, stations, avg_score) %>%
       mutate(avg_score = round(avg_score, 2)) %>%
       rename("Station Code" = station_code,
-             "Station" = station,
+             "Station" = stations,
              "Vulnerability Score" = avg_score)
   }, ignoreNULL = FALSE)  # Set to FALSE to run on app initialization
   
@@ -406,10 +442,10 @@ server <- function(input, output, session) {
     c_df %>%
       arrange(Score) %>%
       head(input$top_number_c) %>%
-      select(station_code, stations.x, Score) %>%
+      select(station_code, stations, Score) %>%
       mutate(Score = round(Score, 2)) %>%
       rename("Station Code" = station_code,
-             "Station" = stations.x,
+             "Station" = stations,
              "Connectivity Score" = Score)
   }, ignoreNULL = FALSE)  # Set to FALSE to run on app initialization
   
@@ -435,8 +471,8 @@ server <- function(input, output, session) {
   #Top 5 most Vulnerable stations overall
   output$top_vulnerable_table <- renderDT({
     data = most_vulnerable %>%
-      select(station_code, station, mean_score) %>%
-      rename("Station" = station,
+      select(station_code, stations, mean_score) %>%
+      rename("Station" = stations,
              "Station_Code" = station_code)
     datatable(data,
               options = list(dom = 't', pageLength = 5))
@@ -445,8 +481,8 @@ server <- function(input, output, session) {
   #Top 5 Least Connected Stations
   output$low_connectivity_table <- renderDT({
     data = least_connected %>%
-      select(station_code, stations.x, Score) %>%
-      rename("Station" = stations.x,
+      select(station_code, stations, Score) %>%
+      rename("Station" = stations,
              "Station_Code" = station_code)
     datatable(data,
               options = list(dom = 't', pageLength = 5))
@@ -464,12 +500,12 @@ server <- function(input, output, session) {
         data = vul_data,
         lat = ~latitude,
         lng = ~longitude,
-        label = ~station_w_code,
+        label = ~station_w_code %>% lapply(htmltools::HTML),
         popup = ~information,
         fillOpacity = 1,
-        fillColor = ~ifelse(station %in% top_vul$station, "red", "white"),
+        fillColor = ~ifelse(stations %in% top_vul$stations, "red", "white"),
         color = "black",
-        radius = ~ifelse(station %in% top_vul$station, 6, 4),
+        radius = ~ifelse(stations %in% top_vul$stations, 6, 4),
         weight = 1.5
       )
   })
@@ -483,13 +519,13 @@ server <- function(input, output, session) {
       addCircleMarkers(data = connect_data, 
                        lat = ~latitude, 
                        lng = ~longitude, 
-                       label = ~station_w_code, 
+                       label = ~station_w_code %>% lapply(htmltools::HTML), 
                        popup = ~information,
                        fillOpacity = 1,
-                       fillColor = ~ifelse(stations %in% bot_con$stations.x , "red","white"),
+                       fillColor = ~ifelse(stations %in% bot_con$stations , "red","white"),
                        opacity = 1, 
                        color = "black", 
-                       radius = ~ifelse(stations %in% bot_con$stations.x, 6,4), 
+                       radius = ~ifelse(stations %in% bot_con$stations, 6,4), 
                        weight = 1.5 #controls the width of outer circle
       )
   })
