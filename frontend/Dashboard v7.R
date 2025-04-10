@@ -373,7 +373,7 @@ top_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of
 
 ####################################Connectivity map####################################
 add_data_c <- read.csv("final_score.csv") %>%
-  select(-line_code, -line_number, -join_station, -line) %>%
+  select(-line_code, -line_number, -line) %>%
   group_by(stations)%>%
   summarise(
     across(station_code, ~paste(., collapse = "/")),
@@ -384,12 +384,13 @@ add_data_c <- read.csv("final_score.csv") %>%
   mutate(Reachable_Stations = lapply(lapply(strsplit(Reachable_Stations, "/"),trimws),unique)) %>% #convert to list. remove all white space, and keep the unique results only. have to convert to list to use unique
   mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>%
   mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% 
-  select(stations, Reachable_Stations, avg_bus_score, avg_walk_score, avg_mrt_score) #to prevent issues when joining later
+  select(stations, Reachable_Stations, join_station) #to prevent issues when joining later
 
 
-c_df <- read.csv("connectivity_score.csv")
+c_df <- read.csv("score_final.csv") %>% mutate(Score=score) %>% select(-score)
+
 connect_data<-c_df %>%
-  select(station_code, stations, Score, line_code) %>%
+  select(station_code, stations, Score, line_code, mrt_score, bus_score, walk_score) %>%
   inner_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data
   inner_join(y= add_data_c, by = "stations") %>%
   mutate(colour = case_when(
@@ -409,7 +410,7 @@ connect_data<-c_df %>%
     Score = mean(Score),
     across(station_code, ~paste(., collapse = "/")),
     across(stationcode_w_colour, ~paste(., collapse = " ")),
-    across(c(latitude, longitude), ~mean(.)),
+    across(c(latitude, longitude, mrt_score, bus_score, walk_score), ~mean(.)),
     across(c(colour, Reachable_Stations), ~first(.))
     )%>%
   ungroup() %>%
@@ -421,7 +422,7 @@ connect_data<-c_df %>%
   ))#create data for the pop up
 
 
-c_df <- left_join(x=c_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
+c_df <- connect_data%>% select(station_code, stations, latitude, longitude, mrt_score, bus_score, walk_score, Score)
 input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
 
 
@@ -435,10 +436,10 @@ least_connected <- c_df %>%
 
 most_vulnerable <- v_df %>%
   # na.omit()%>% 
-  group_by(stations, station_code) %>% 
-  summarize(mean_score = mean(avg_score)) %>%
-  arrange(desc(mean_score))%>%
-  mutate(mean_score = round(mean_score,2))
+  # group_by(stations, station_code) %>% 
+  # summarize(mean_score = mean(avg_score)) %>%
+  # arrange(desc(mean_score))%>%
+  mutate(avg_score = round(avg_score,2))
 
 server <- function(input, output, session) {
   
@@ -608,9 +609,10 @@ server <- function(input, output, session) {
   # Top Vulnerable stations overall
   output$top_vulnerable_table <- renderDT({
     data = most_vulnerable %>%
-      select(station_code, stations, mean_score) %>%
+      select(station_code, stations, avg_score) %>%
       rename("Station" = stations,
-             "Station_Code" = station_code)
+             "Station Code" = station_code,
+             "Vulnerability Score" = avg_score)
     datatable(data,
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
@@ -624,9 +626,15 @@ server <- function(input, output, session) {
   #Top Least Connected Stations
   output$low_connectivity_table <- renderDT({
     data = least_connected %>%
-      select(station_code, stations, Score) %>%
+      mutate(walk_score = round(walk_score, 2), bus_score = round(bus_score,2)) %>%
+      mutate(across(c(walk_score,bus_score), ~replace_na(.,0))) %>%
+      select(station_code, stations, Score, walk_score, bus_score, mrt_score) %>%
       rename("Station" = stations,
-             "Station_Code" = station_code)
+             "Station Code" = station_code,
+             "MRT Score" = mrt_score,
+             "Walk Score" = walk_score, 
+             "Bus Score" = bus_score, 
+             )
     datatable(data,
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
