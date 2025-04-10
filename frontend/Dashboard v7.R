@@ -372,10 +372,26 @@ top_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of
 ##############################################################################################################################
 
 ####################################Connectivity map####################################
+add_data_c <- read.csv("final_score.csv") %>%
+  select(-line_code, -line_number, -join_station, -line) %>%
+  group_by(stations)%>%
+  summarise(
+    across(station_code, ~paste(., collapse = "/")),
+    across(-station_code, ~first(.)),
+  ) %>%
+  mutate(Reachable_Stations = gsub("MRT STATION", "", Reachable_Stations)) %>% #remove the string "MRT STATION"
+  mutate(Reachable_Stations = gsub("\\(.*?\\)", "", Reachable_Stations)) %>% #remove everything in paranthesis, including the paranthesis
+  mutate(Reachable_Stations = lapply(lapply(strsplit(Reachable_Stations, "/"),trimws),unique)) %>% #convert to list. remove all white space, and keep the unique results only. have to convert to list to use unique
+  mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>%
+  mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% 
+  select(stations, Reachable_Stations, avg_bus_score, avg_walk_score, avg_mrt_score) #to prevent issues when joining later
+
+
 c_df <- read.csv("connectivity_score.csv")
 connect_data<-c_df %>%
   select(station_code, stations, Score, line_code) %>%
   inner_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data
+  inner_join(y= add_data_c, by = "stations") %>%
   mutate(colour = case_when(
     line_code == "CCL" ~ "orange",
     line_code == "TEL" ~ "saddlebrown",
@@ -394,18 +410,20 @@ connect_data<-c_df %>%
     across(station_code, ~paste(., collapse = "/")),
     across(stationcode_w_colour, ~paste(., collapse = " ")),
     across(c(latitude, longitude), ~mean(.)),
-    across(colour, ~first(.))
+    across(c(colour, Reachable_Stations), ~first(.))
     )%>%
   ungroup() %>%
   mutate(Score = as.numeric(Score)*5) %>%
   mutate(station_w_code = paste(stationcode_w_colour, stations)) %>%
   mutate(information = paste0("<h5 style='margin-bottom:2px'><b>",stationcode_w_colour, stations,"</b></h5>",
-                             "Connectivity Score:<br>", Score
+                             "Connectivity Score: ", Score, 
+                             "<br>Reachable Stations: <br>- ", Reachable_Stations
   ))#create data for the pop up
 
 
 c_df <- left_join(x=c_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
 input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
+
 
 ###initialise the bot 5 least connected stations. 
 bot5_connect <- c_df %>% arrange(Score) %>% head(5)
