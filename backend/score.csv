@@ -1,0 +1,172 @@
+"","station_code","stations","line","line_code","line_number","score"
+"1","CE1","Bayfront","Circle Line","CCL",1,0.160776125578843
+"2","CC1","Dhoby Ghaut","Circle Line","CCL",1,0.844737037099634
+"3","CC2","Bras Basah","Circle Line","CCL",2,0.406713557150193
+"4","CE2","Marina Bay","Circle Line","CCL",2,0.381587300875181
+"5","CC3","Esplanade","Circle Line","CCL",3,0.39513667225613
+"6","CC4","Promenade","Circle Line","CCL",4,0.415602159671098
+"7","CC5","Nicoll Highway","Circle Line","CCL",5,0.134422499758786
+"8","CC6","Stadium","Circle Line","CCL",6,0.0384984850971291
+"9","CC7","Mountbatten","Circle Line","CCL",7,0.119602480263326
+"10","CC8","Dakota","Circle Line","CCL",8,0.134388159895359
+"11","CC9","Paya Lebar","Circle Line","CCL",9,0.188426805355369
+"12","CC10","MacPherson","Circle Line","CCL",10,0.215740942297204
+"13","CC11","Tai Seng","Circle Line","CCL",11,0.0800092858885413
+"14","CC12","Bartley","Circle Line","CCL",12,0.121946599407233
+"15","CC13","Serangoon","Circle Line","CCL",13,0.19901046456146
+"16","CC14","Lorong Chuan","Circle Line","CCL",14,0.0651736359007423
+"17","CC15","Bishan","Circle Line","CCL",15,0.110260282032711
+"18","CC16","Marymount","Circle Line","CCL",16,0.0591709247874729
+"19","CC17","Caldecott","Circle Line","CCL",17,0.115756284984539
+"20","CC19","Botanic Gardens","Circle Line","CCL",19,0.173597827538301
+"21","CC20","Farrer Road","Circle Line","CCL",20,0.0434598953585155
+"22","CC21","Holland Village","Circle Line","CCL",21,0.0259083936645791
+"23","CC22","Buona Vista","Circle Line","CCL",22,0.109725494470984
+"24","CC23","one-north","Circle Line","CCL",23,0.0386514612071517
+"25","CC24","Kent Ridge","Circle Line","CCL",24,0.040576039130726
+"26","CC25","Haw Par Villa","Circle Line","CCL",25,0.0412855579651824
+"27","CC26","Pasir Panjang","Circle Line","CCL",26,0.0289669392127946
+"28","CC27","Labrador Park","Circle Line","CCL",27,0.0820886796417402
+"29","CC28","Telok Blangah","Circle Line","CCL",28,0.0424049390015492
+"30","CC29","HarbourFront","Circle Line","CCL",29,0.079053022406233
+"31","CG1","Expo","Changi Airport Branch Line","CGL",1,0.0502276843618532
+"32","CG2","Changi Airport","Changi Airport Branch Line","CGL",2,0
+"33","DT1","Bukit Panjang","Downtown Line","DTL",1,0.0909029061915401
+"34","DT2","Cashew","Downtown Line","DTL",2,0.0645247697005841
+"35","DT3","Hillview","Downtown Line","DTL",3,0.0678895253885405
+"36","DT4","Hume","Downtown Line","DTL",4,0.0352002841194967
+"37","DT5","Beauty World","Downtown Line","DTL",5,0.0358865618541826
+"38","DT6","King Albert Park","Downtown Line","DTL",6,0.0522630433150317
+"39","DT7","Sixth Avenue","Downtown Line","DTL",7,0.09424155570304
+"40","DT8","Tan Kah Kee","Downtown Line","DTL",8,0.0933821317912477
+"41","DT9","Botanic Gardens","Downtown Line","DTL",9,0.173597827538301
+"42","DT10","Stevens","Downtown Line","DTL",10,0.133034402978913
+"43","DT11","Newton","Downtown Line","DTL",11,0.276132800856747
+"44","DT12","Little India","Downtown Line","DTL",12,0.501865529960139
+"45","DT13","Rochor","Downtown Line","DTL",13,0.283072309062784
+"46","DT14","Bugis","Downtown Line","DTL",14,1
+"47","DT15","Promenade","Downtown Line","DTL",15,0.415602159671098
+"48","DT16","Bayfront","Downtown Line","DTL",16,0.160776125578843
+"49","DT17","Downtown","Downtown Line","DTL",17,0.242696620563162
+"50","DT18","Telok Ayer","Downtown Line","DTL",18,0.32389042550357
+"51","DT19","Chinatown","Downtown Line","DTL",19,0.748329738105621
+"52","DT20","Fort Canning","Downtown Line","DTL",20,0.269869657638497
+"53","DT21","Bencoolen","Downtown Line","DTL",21,0.394952295164806
+"54","DT22","Jalan Besar","Downtown Line","DTL",22,0.275571895910856
+"55","DT23","Bendemeer","Downtown Line","DTL",23,0.185291200129909
+"56","DT24","Geylang Bahru","Downtown Line","DTL",24,0.0465303975712199
+"57","DT25","Mattar","Downtown Line","DTL",25,0.0672624107800736
+"58","DT26","MacPherson","Downtown Line","DTL",26,0.215740942297204
+"59","DT27","Ubi","Downtown Line","DTL",27,0.0576687667410154
+"60","DT28","Kaki Bukit","Downtown Line","DTL",28,0.0253314191612288
+"61","DT29","Bedok North","Downtown Line","DTL",29,0.0238292611147712
+"62","DT30","Bedok Reservoir","Downtown Line","DTL",30,0.0305063945773888
+"63","DT31","Tampines West","Downtown Line","DTL",31,0.0322916422424794
+"64","DT32","Tampines","Downtown Line","DTL",32,0.0603645746341163
+"65","DT33","Tampines East","Downtown Line","DTL",33,0.0429768632427191
+"66","DT34","Upper Changi","Downtown Line","DTL",34,0.0286388214632152
+"67","DT35","Expo","Downtown Line","DTL",35,0.0502276843618532
+"68","EW1","Pasir Ris","East West Line","EWL",1,0.0198372182067037
+"69","EW2","Tampines","East West Line","EWL",2,0.0603645746341163
+"70","EW3","Simei","East West Line","EWL",3,0.0272039677480772
+"71","EW4","Tanah Merah","East West Line","EWL",4,0.0470708466625336
+"72","EW5","Bedok","East West Line","EWL",5,0.0355308109037808
+"73","EW6","Kembangan","East West Line","EWL",6,0.0288309979252248
+"74","EW7","Eunos","East West Line","EWL",7,0.0757447884982201
+"75","EW8","Paya Lebar","East West Line","EWL",8,0.188426805355369
+"76","EW9","Aljunied","East West Line","EWL",9,0.0789325248461122
+"77","EW10","Kallang","East West Line","EWL",10,0.144303781686224
+"78","EW11","Lavender","East West Line","EWL",11,0.294242863120034
+"79","EW12","Bugis","East West Line","EWL",12,1
+"80","EW13","City Hall","East West Line","EWL",13,0.777926494781065
+"81","EW14","Raffles Place","East West Line","EWL",14,0.566447130924166
+"82","EW15","Tanjong Pagar","East West Line","EWL",15,0.231781838491605
+"83","EW16","Outram Park","East West Line","EWL",16,0.843631490870224
+"84","EW17","Tiong Bahru","East West Line","EWL",17,0.204520029043724
+"85","EW18","Redhill","East West Line","EWL",18,0.0368453646453383
+"86","EW19","Queenstown","East West Line","EWL",19,0.0386845678749337
+"87","EW20","Commonwealth","East West Line","EWL",20,0.0421935786672048
+"88","EW21","Buona Vista","East West Line","EWL",21,0.109725494470984
+"89","EW22","Dover","East West Line","EWL",22,0.0392486982061859
+"90","EW23","Clementi","East West Line","EWL",23,0.0170614883863258
+"91","EW24","Jurong East","East West Line","EWL",24,0.0900514657025227
+"92","EW25","Chinese Garden","East West Line","EWL",25,0.0521407601245566
+"93","EW26","Lakeside","East West Line","EWL",26,0.0274105517110367
+"94","EW27","Boon Lay","East West Line","EWL",27,0.102050797420708
+"95","EW28","Pioneer","East West Line","EWL",28,0.0446758269184307
+"96","EW29","Joo Koon","East West Line","EWL",29,0.00558177576707842
+"97","EW30","Gul Circle","East West Line","EWL",30,0.00186059192235947
+"98","EW31","Tuas Crescent","East West Line","EWL",31,0.00480956034844393
+"99","EW32","Tuas West Road","East West Line","EWL",32,0.0115892897413784
+"100","EW33","Tuas Link","East West Line","EWL",33,0.0102180975098159
+"101","NE1","HarbourFront","North East Line","NEL",1,0.079053022406233
+"102","NE3","Outram Park","North East Line","NEL",3,0.843631490870224
+"103","NE4","Chinatown","North East Line","NEL",4,0.748329738105621
+"104","NE5","Clarke Quay","North East Line","NEL",5,0.542236813207466
+"105","NE6","Dhoby Ghaut","North East Line","NEL",6,0.844737037099634
+"106","NE7","Little India","North East Line","NEL",7,0.501865529960139
+"107","NE8","Farrer Park","North East Line","NEL",8,0.265616695593409
+"108","NE9","Boon Keng","North East Line","NEL",9,0.235839513597064
+"109","NE10","Potong Pasir","North East Line","NEL",10,0.168992011180579
+"110","NE11","Woodleigh","North East Line","NEL",11,0.134155999072441
+"111","NE12","Serangoon","North East Line","NEL",12,0.19901046456146
+"112","NE13","Kovan","North East Line","NEL",13,0.0769546974034468
+"113","NE14","Hougang","North East Line","NEL",14,0.0642222971083264
+"114","NE15","Buangkok","North East Line","NEL",15,0.0391467158926827
+"115","NE16","Sengkang","North East Line","NEL",16,0.0345979689624987
+"116","NE17","Punggol","North East Line","NEL",17,0.00961912069688786
+"117","NE18","Punggol Coast","North East Line","NEL",18,0.00372118384471895
+"118","NS1","Jurong East","North South Line","NSL",1,0.0900514657025227
+"119","NS2","Bukit Batok","North South Line","NSL",2,0.0363550774469321
+"120","NS3","Bukit Gombak","North South Line","NSL",3,0.0103913361155224
+"121","NS4","Choa Chu Kang","North South Line","NSL",4,0.0482480670141954
+"122","NS5","Yew Tee","North South Line","NSL",5,0.0074423676894379
+"123","NS7","Kranji","North South Line","NSL",7,0.00589793685216891
+"124","NS8","Marsiling","North South Line","NSL",8,0.0235917474086757
+"125","NS9","Woodlands","North South Line","NSL",9,0.0467887026281582
+"126","NS10","Admiralty","North South Line","NSL",10,0.0152008964639663
+"127","NS11","Sembawang","North South Line","NSL",11,0.00558177576707842
+"128","NS12","Canberra","North South Line","NSL",12,0.0111635515341568
+"129","NS13","Yishun","North South Line","NSL",13,0.0147114967731693
+"130","NS14","Khatib","North South Line","NSL",14,0.00912972100609088
+"131","NS15","Yio Chu Kang","North South Line","NSL",15,0.0265073704775071
+"132","NS16","Ang Mo Kio","North South Line","NSL",16,0.0664229634447543
+"133","NS17","Bishan","North South Line","NSL",17,0.110260282032711
+"134","NS18","Braddell","North South Line","NSL",18,0.0940196967454868
+"135","NS19","Toa Payoh","North South Line","NSL",19,0.0491922520031529
+"136","NS20","Novena","North South Line","NSL",20,0.112081309616623
+"137","NS21","Newton","North South Line","NSL",21,0.276132800856747
+"138","NS22","Orchard","North South Line","NSL",22,0.283027369679951
+"139","NS23","Somerset","North South Line","NSL",23,0.420042323166541
+"140","NS24","Dhoby Ghaut","North South Line","NSL",24,0.844737037099634
+"141","NS25","City Hall","North South Line","NSL",25,0.777926494781065
+"142","NS26","Raffles Place","North South Line","NSL",26,0.566447130924166
+"143","NS27","Marina Bay","North South Line","NSL",27,0.381587300875181
+"144","NS28","Marina South Pier","North South Line","NSL",28,0.0169095404279143
+"145","TE1","Woodlands North","Thomson East Coast Line","TEL",1,0
+"146","TE2","Woodlands","Thomson East Coast Line","TEL",2,0.0467887026281582
+"147","TE3","Woodlands South","Thomson East Coast Line","TEL",3,0.0114797126192473
+"148","TE4","Springleaf","Thomson East Coast Line","TEL",4,0
+"149","TE5","Lentor","Thomson East Coast Line","TEL",5,0.00853074419316288
+"150","TE6","Mayflower","Thomson East Coast Line","TEL",6,0.0292497549406321
+"151","TE7","Bright Hill","Thomson East Coast Line","TEL",7,0.0350601169802477
+"152","TE8","Upper Thomson","Thomson East Coast Line","TEL",8,0.0435771308788215
+"153","TE9","Caldecott","Thomson East Coast Line","TEL",9,0.115756284984539
+"154","TE11","Stevens","Thomson East Coast Line","TEL",11,0.133034402978913
+"155","TE12","Napier","Thomson East Coast Line","TEL",12,0.0406525593776026
+"156","TE13","Orchard Boulevard","Thomson East Coast Line","TEL",13,0.0445800532944855
+"157","TE14","Orchard","Thomson East Coast Line","TEL",14,0.283027369679951
+"158","TE15","Great World","Thomson East Coast Line","TEL",15,0.156655910421959
+"159","TE16","Havelock","Thomson East Coast Line","TEL",16,0.175577431986708
+"160","TE17","Outram Park","Thomson East Coast Line","TEL",17,0.843631490870224
+"161","TE18","Maxwell","Thomson East Coast Line","TEL",18,0.29031055000138
+"162","TE19","Shenton Way","Thomson East Coast Line","TEL",19,0.24982347159489
+"163","TE20","Marina Bay","Thomson East Coast Line","TEL",20,0.381587300875181
+"164","TE22","Gardens by The Bay","Thomson East Coast Line","TEL",22,0.0186059192235947
+"165","TE23","Tanjong Rhu","Thomson East Coast Line","TEL",23,0.0159731118826008
+"166","TE24","Katong Park","Thomson East Coast Line","TEL",24,0.0469758873426008
+"167","TE25","Tanjong Katong","Thomson East Coast Line","TEL",25,0.056050260681861
+"168","TE26","Marine Parade","Thomson East Coast Line","TEL",26,0.0375953038635996
+"169","TE27","Marine Terrace","Thomson East Coast Line","TEL",27,0.0337764995612385
+"170","TE28","Siglap","Thomson East Coast Line","TEL",28,0.0276942549464834
+"171","TE29","Bayshore","Thomson East Coast Line","TEL",29,0.0252346862111959
