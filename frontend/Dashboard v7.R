@@ -431,14 +431,14 @@ bot5_connect <- c_df %>% arrange(Score) %>% head(5)
 ##############################################################################################################################
 
 least_connected <- c_df %>%
-  arrange(Score) %>%
+  arrange(Score, stations) %>%
   mutate(Score= round(Score,2))
 
 most_vulnerable <- v_df %>%
   # na.omit()%>% 
   # group_by(stations, station_code) %>% 
   # summarize(mean_score = mean(avg_score)) %>%
-  # arrange(desc(mean_score))%>%
+  # arrange(desc(mean_score), stations)%>%
   mutate(avg_score = round(avg_score,2))
 
 server <- function(input, output, session) {
@@ -528,7 +528,7 @@ server <- function(input, output, session) {
     vul_data <- v_df %>%
       filter(day_type == input$day_of_week, 
              is_peak == input$peak_bool) %>%
-      arrange(desc(avg_score)) %>%
+      arrange(desc(avg_score), stations) %>%
       head(input$top_number) %>%
       select(station_code, stations, avg_score) %>%
       mutate(avg_score = round(avg_score, 2))
@@ -568,7 +568,7 @@ server <- function(input, output, session) {
   connectivity_reactive_table <- eventReactive(input$update2, {
     
     con_data <- c_df %>%
-      arrange(Score) %>%
+      arrange(Score, stations) %>%
       head(input$top_number_c) %>%
       select(station_code, stations, Score) %>%
       mutate(Score = round(Score, 2)) %>%
@@ -618,7 +618,9 @@ server <- function(input, output, session) {
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
                 pageLength = 5,
                 lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
-                pagingType = "numbers"  # Shows page numbers instead of simple next/previous
+                pagingType = "numbers",
+                columnDefs = list(
+                  list(className = 'dt-center', targets = "_all") 
               ))
   })
   
@@ -640,7 +642,10 @@ server <- function(input, output, session) {
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
                 pageLength = 5,
                 lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
-                pagingType = "numbers"  # Shows page numbers instead of simple next/previous
+                pagingType = "numbers",
+                columnDefs = list(
+                  list(className = 'dt-center', targets = "_all") 
+                )
               ))
   })
   ################################################################################
