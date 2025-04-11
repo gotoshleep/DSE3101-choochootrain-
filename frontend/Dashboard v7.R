@@ -297,18 +297,24 @@ ui <- dashboardPage(
                          div(class = "model-details",
                              h4("Key Variables:"),
                              tags$ul(
-                               tags$li(tags$strong("Walking time (≤15 mins)"), " - 30% weight"),
-                               tags$li(tags$strong("Shared bus services"), " - 20% weight"),
-                               tags$li(tags$strong("Accessible stations"), " - 15% weight"),
-                               tags$li(tags$strong("Interchange status"), " - 35% weight")
+                               tags$li(tags$strong("MRT Score"), " - 40% weight"),
+                               tags$li(tags$strong("Walk Score"), " - 25% weight"),
+                               tags$li(tags$strong("Bus score"), " - 35% weight"),
                              )
                          ),
-                         h4("Connectivity Definition:"),
-                         p("Well-connected stations provide:"),
+                         h4("Variable Breakdown:"),
                          tags$ul(
-                           tags$li("Bus services within 500m walking distance"),
-                           tags$li("≤15 min walking paths to other MRT stations"),
-                           tags$li("Bus routes with ≤2km connections to alternate stations")
+                           tags$li("MRT Score: The number of altenative mrt lines at a station"),
+                           tags$li("Walk Score: Measures how accessible other MRT stations are by walking",
+                                   tags$ul(
+                                     tags$li("The walking path must take ≤15 min to complete")
+                                   )
+                                   ),
+                           tags$li("Bus Score: Measures how accessible other MRT stations are by bus",
+                                   tags$ul(
+                                     tags$li("Bus services must be within 500m of the mrt station"),
+                                     tags$li("Bus routes must connect to alternate stations and must be ≤ 2km")
+                                   ))
                          )
                      )
               )
@@ -384,7 +390,7 @@ add_data_c <- read.csv("final_score.csv") %>%
   mutate(Reachable_Stations = lapply(lapply(strsplit(Reachable_Stations, "/"),trimws),unique)) %>% #convert to list. remove all white space, and keep the unique results only. have to convert to list to use unique
   mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>%
   mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% 
-  select(stations, Reachable_Stations, join_station) #to prevent issues when joining later
+  select(stations, Reachable_Stations, join_station) #to prevent issues when joining later, only take relevant cols
 
 
 c_df <- read.csv("score_final.csv") %>% mutate(Score=score) %>% select(-score)
@@ -413,11 +419,15 @@ connect_data<-c_df %>%
     across(c(latitude, longitude, mrt_score, bus_score, walk_score), ~mean(.)),
     across(c(colour, Reachable_Stations), ~first(.))
     )%>%
-  ungroup() %>%
+  ungroup() %>% 
   mutate(Score = as.numeric(Score)*5) %>%
+  mutate(quantile = cut(Score, breaks = quantile(Score, probs = seq(0, 1, 1/3), na.rm = TRUE),
+                        labels = c("<span style=\"color:#cd2626;\">Low Connectivity</span>", "<span style=\"color:goldenrod;\">Average Connectivity</span>", "<span style=\"color:forestgreen;\">High Connectivity</span>"), 
+                        include.lowest = TRUE))%>%
   mutate(station_w_code = paste(stationcode_w_colour, stations)) %>%
   mutate(information = paste0("<h5 style='margin-bottom:2px'><b>",stationcode_w_colour, stations,"</b></h5>",
-                             "Connectivity Score: ", Score, 
+                              "<b>", quantile,
+                             "</b><br>Connectivity Score: ", Score, 
                              "<br>Reachable Stations: <br>- ", Reachable_Stations
   ))#create data for the pop up
 
@@ -437,7 +447,8 @@ least_connected <- c_df %>%
 most_vulnerable <- v_df %>%
   na.omit() %>% 
   group_by(stations, station_code) %>% 
-  summarize(mean_score = mean(avg_score)) %>%
+  summarize(mean_score = mean(avg_score), 
+            across(vul_category, ~first(.))) %>%
   arrange(desc(mean_score), stations) %>%
   mutate(avg_score = round(mean_score,2))
 
@@ -609,10 +620,12 @@ server <- function(input, output, session) {
   # Top Vulnerable stations overall
   output$top_vulnerable_table <- renderDT({
     data = most_vulnerable %>%
-      select(station_code, stations, avg_score) %>%
+      select(station_code, stations, avg_score, vul_category) %>%
       rename("Station" = stations,
              "Station Code" = station_code,
-             "Vulnerability Score" = avg_score)
+             "Vulnerability Score" = avg_score,
+             "Vulnerability Quantile" = vul_category
+             )
     datatable(data,
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
@@ -631,7 +644,7 @@ server <- function(input, output, session) {
     data = least_connected %>%
       mutate(walk_score = round(walk_score, 2), bus_score = round(bus_score,2)) %>%
       mutate(across(c(walk_score,bus_score), ~replace_na(.,0))) %>%
-      select(station_code, stations, Score, walk_score, bus_score, mrt_score) %>%
+      select(station_code, stations, Score, mrt_score, walk_score, bus_score, ) %>%
       rename("Station" = stations,
              "Station Code" = station_code,
              "MRT Score" = mrt_score,
