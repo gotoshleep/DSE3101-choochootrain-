@@ -338,8 +338,14 @@ v_df <- read.csv("vul_scores_time.csv")
 latlng_data <- read_xlsx("MRT_DATA.xlsx") %>% select(-stations)
 vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is ordered by station_code, then weekday then peak status 
   mutate(status = paste0(day_type,is_peak)) %>%
-#  group_by(stations) %>% mutate(number = n()) %>% ungroup() %>%
   select(station_code, stations, vul_category, status, line_code) %>%
+  mutate(vul_category = case_when(
+    vul_category == "Very Low" ~ "<span style=\"color:#BC2023;\"><b>Very Low</b></span>",
+    vul_category == "Low" ~ "<span style=\"color:#EB442C;\"><b>Low</b></span>",
+    vul_category == "Medium" ~ "<span style=\"color:#F8B324;\"><b>Medium</b></span>",
+    vul_category == "High" ~ "<span style=\"color:#0C6B37;\"><b>High</b></span>",
+    vul_category == "Very High" ~ "<span style=\"color:#094A25;\"><b>Very High</b></span>"
+  )) %>%
   mutate(colour = case_when(
     line_code == "CCL" ~ "orange",
     line_code == "TEL" ~ "saddlebrown",
@@ -353,7 +359,9 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
 #                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
-                             "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`
+                             "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`,
+                             "<br>Weekend/Holiday Peak: "#, `WEEKENDS/HOLIDAY1`
+
   )) %>% #create data for the pop up
   left_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data 
   select(-WEEKDAY0, -WEEKDAY1, -`WEEKENDS/HOLIDAY0` ) %>%
