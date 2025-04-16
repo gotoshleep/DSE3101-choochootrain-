@@ -566,7 +566,8 @@ server <- function(input, output, session) {
     ridership <- read.csv("ridership_by_stations_6months.csv") %>%
       group_by(DAY_TYPE, is_peak, stations)%>%
       summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>%
-      ungroup()
+      ungroup() %>%
+      mutate(DAY_TYPE = ifelse(DAY_TYPE == "WEEKENDS/HOLIDAY", "WEEKEND/HOLIDAY", DAY_TYPE))
     
     rider_vul_data <- ridership %>%
       filter(DAY_TYPE == input$day_of_week, 
@@ -574,7 +575,7 @@ server <- function(input, output, session) {
       select(stations, AVG_RIDERS) %>%
       mutate(AVG_RIDERS = round(AVG_RIDERS))
     
-    left_join(vul_data, rider_vul_data, by = "stations") %>%
+    vul_data <- left_join(vul_data, rider_vul_data, by = "stations") %>%
       rename("Station Code" = station_code,
              "Station" = stations,
              "Vulnerability Score" = avg_score,
