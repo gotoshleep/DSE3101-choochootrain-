@@ -199,7 +199,7 @@ ui <- dashboardPage(
                     title = "Adjust Real-Time Metrics", background = "light-blue",
                     radioButtons("day_of_week", "Weekday/Weekend:",
                                  choiceNames = c("Weekday", "Weekend"),
-                                 choiceValues = c("WEEKDAY", "WEEKENDS/HOLIDAY")
+                                 choiceValues = c("WEEKDAY", "WEEKEND/HOLIDAY")
                     ),
                     
                     radioButtons(inputId = "peak_bool",
