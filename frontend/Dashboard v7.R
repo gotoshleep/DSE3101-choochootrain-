@@ -199,7 +199,7 @@ ui <- dashboardPage(
                     title = "Adjust Real-Time Metrics", background = "light-blue",
                     radioButtons("day_of_week", "Weekday/Weekend:",
                                  choiceNames = c("Weekday", "Weekend"),
-                                 choiceValues = c("WEEKDAY", "WEEKEND/HOLIDAY")
+                                 choiceValues = c("WEEKDAY", "WEEKENDS/HOLIDAY")
                     ),
                     
                     radioButtons(inputId = "peak_bool",
@@ -346,8 +346,12 @@ mrtline_df <- df %>% st_zm(drop = T, what = "ZM") %>%
 #https://github.com/cheeaun/railrouter-sg/blob/master/src/sg-rail.geo.json
 #thank you train nerd ily 
 
-v_df <- read.csv("vul_scores_dynamic.csv") %>% rename("avg_score" = "xgb_scaled")
+v_df <- read.csv("vul_scores_dynamic.csv") %>% 
+  rename("avg_score" = "xgb_scaled") %>%
+  mutate(day_type = ifelse(day_type == "WEEKEND/HOLIDAY", "WEEKENDS/HOLIDAY", day_type))
+
 latlng_data <- read_xlsx("MRT_DATA.xlsx") %>% select(-stations)
+
 vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is ordered by station_code, then weekday then peak status 
   mutate(status = paste0(day_type,is_peak)) %>%
   select(station_code, stations, vul_category, status, line_code, weather_condition) %>%
@@ -371,12 +375,12 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
 #                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
-                             "<br>Weekend/Holiday Offpeak: ", `WEEKEND/HOLIDAY0`,
-                             "<br>Weekend/Holiday Peak: ", `WEEKEND/HOLIDAY1`
+                             "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`,
+                             "<br>Weekend/Holiday Peak: ", `WEEKENDS/HOLIDAY1`
 
   )) %>% #create data for the pop up
   left_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data 
-  select(-WEEKDAY0, -WEEKDAY1, -`WEEKEND/HOLIDAY0`, -`WEEKEND/HOLIDAY1` ) %>%
+  select(-WEEKDAY0, -WEEKDAY1, -`WEEKENDS/HOLIDAY0`, -`WEEKENDS/HOLIDAY1` ) %>%
   arrange(stations) %>%
   group_by(stations, weather_condition) %>%
   mutate(stationcode_w_colour = 
@@ -566,8 +570,7 @@ server <- function(input, output, session) {
     ridership <- read.csv("ridership_by_stations_6months.csv") %>%
       group_by(DAY_TYPE, is_peak, stations)%>%
       summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>%
-      ungroup() %>%
-      mutate(DAY_TYPE = ifelse(DAY_TYPE == "WEEKENDS/HOLIDAY", "WEEKEND/HOLIDAY", DAY_TYPE))
+      ungroup() 
     
     rider_vul_data <- ridership %>%
       filter(DAY_TYPE == input$day_of_week, 
