@@ -208,6 +208,12 @@ ui <- dashboardPage(
                                  choiceValues = c(1, 0)
                     ),
                     
+                    radioButtons(inputId = "weather_condn",
+                                 label = "Choose weather condition:",
+                                 choiceNames = c("No Rain", "Moderate Rain", "Heavy Rain"),
+                                 choiceValues = c("fair", "moderate", "heavy")
+                    ),
+                    
                     numericInput(inputId = "top_number", 
                                  label = "Top # stations(max 20):",
                                  value = 5,
@@ -279,12 +285,18 @@ ui <- dashboardPage(
                      div(class = "methodology-card",
                          h3(icon("exclamation-triangle"), " Vulnerability Scoring"),
                          div(class = "model-details",
-                             h4("XGBoost Selected Variables:"),
+                             h4("XGBoost Key Variables:"),
                              tags$ul(
-                               tags$li(tags$strong("riders_per_station"), " - Passenger Volume"),
-                               tags$li(tags$strong("average_monthly_rainfall.mm."), " - Weather Impact"),
-                               tags$li(tags$strong("Line codes"), " - Infrastructure age/type"),
-                               tags$li(tags$strong("is_morning_peak"), " - Time Period")
+                               tags$li(tags$strong("Line Age"), "- Age of the station. Older stations may require more infrastructure maintenance."),
+                               tags$li(tags$strong("Peakhour"), " - Peak hours of 7am-9am and 6pm-8pm. Peak hours generally see higher passenger volume and shortened train interval timings. This may place more stress on the system."),
+                               tags$li(tags$strong("Rainfall(mm)"), " - The numeric average (in mm) of rainfall based on the weather condition. Moderate Rain maps to the median amount of rainfall at the station in the event of rain, while Heavy Rain maps to the maximum amount."),
+                               tags$li(tags$strong("Average Riders"), " - Average passenger volume at peak and non-peak hours. Higher passenger volume places more stress on transport infrastucture.")
+                             ),
+                             h4("Categories:"),
+                             tags$ul(
+                               tags$li(tags$strong("Day"), " - Is it the weekday or the weekend"),
+                               tags$li(tags$strong("Peakhour"), " - Peak hours of 7am-9am and 6pm-8pm. Peak hours generally see higher passenger volume and shortened train interval timings. This may place more stress on the system."),
+                               tags$li(tags$strong("Weather Condition"), " - Weather condition at the station.")
                              )
                          )
                      )
@@ -334,17 +346,17 @@ mrtline_df <- df %>% st_zm(drop = T, what = "ZM") %>%
 #https://github.com/cheeaun/railrouter-sg/blob/master/src/sg-rail.geo.json
 #thank you train nerd ily 
 
-v_df <- read.csv("vul_scores_time.csv")
+v_df <- read.csv("vul_scores_dynamic.csv") %>% rename("avg_score" = "xgb_scaled")
 latlng_data <- read_xlsx("MRT_DATA.xlsx") %>% select(-stations)
 vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is ordered by station_code, then weekday then peak status 
   mutate(status = paste0(day_type,is_peak)) %>%
-  select(station_code, stations, vul_category, status, line_code) %>%
+  select(station_code, stations, vul_category, status, line_code, weather_condition) %>%
   mutate(vul_category = case_when(
-    vul_category == "Very Low" ~ "<span style=\"color:#BC2023;\"><b>Very Low</b></span>",
-    vul_category == "Low" ~ "<span style=\"color:#EB442C;\"><b>Low</b></span>",
+    vul_category == "Very Low" ~ "<span style=\"color:#094A25;\"><b>Very Low</b></span>",
+    vul_category == "Low" ~ "<span style=\"color:#0C6B37;\"><b>Low</b></span>",
     vul_category == "Medium" ~ "<span style=\"color:#F8B324;\"><b>Medium</b></span>",
-    vul_category == "High" ~ "<span style=\"color:#0C6B37;\"><b>High</b></span>",
-    vul_category == "Very High" ~ "<span style=\"color:#094A25;\"><b>Very High</b></span>"
+    vul_category == "High" ~ "<span style=\"color:#EB442C;\"><b>High</b></span>",
+    vul_category == "Very High" ~ "<span style=\"color:#BC2023;\"><b>Very High</b></span>"
   )) %>%
   mutate(colour = case_when(
     line_code == "CCL" ~ "orange",
@@ -354,19 +366,19 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
     line_code == "NEL" ~ "darkmagenta",
     line_code == "NSL" ~ "orangered"
   )) %>% ##giving colour to each line
-  pivot_wider(names_from = status, values_from = vul_category) %>%
+  pivot_wider(names_from = status, values_from = vul_category) %>% #to access all info in each row
   mutate(information = paste0("<h5 style='margin-bottom:2px'><b><span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",station_code,"</span> ", stations,"</b></h5>", 
 #                             "Vulnerability quantiles:", 
                              "Weekday Offpeak: ", WEEKDAY0, 
                              "<br>Weekday Peak: ", WEEKDAY1, 
-                             "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`,
-                             "<br>Weekend/Holiday Peak: "#, `WEEKENDS/HOLIDAY1`
+                             "<br>Weekend/Holiday Offpeak: ", `WEEKEND/HOLIDAY0`,
+                             "<br>Weekend/Holiday Peak: ", `WEEKEND/HOLIDAY1`
 
   )) %>% #create data for the pop up
   left_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data 
-  select(-WEEKDAY0, -WEEKDAY1, -`WEEKENDS/HOLIDAY0` ) %>%
+  select(-WEEKDAY0, -WEEKDAY1, -`WEEKEND/HOLIDAY0`, -`WEEKEND/HOLIDAY1` ) %>%
   arrange(stations) %>%
-  group_by(stations) %>%
+  group_by(stations, weather_condition) %>%
   mutate(stationcode_w_colour = 
            paste0("<span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",
                   station_code,"</span> ")) %>% ##surround station codes with html that changes its colour and has borders 
@@ -379,10 +391,13 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
   mutate(station_w_code = paste(stationcode_w_colour, stations))
 
 v_df <- left_join(x=v_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
-input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
+input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1), weather_condn = c("fair"))
 
 ###initialise the top 5 most vulnerable stations. 
-top_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of_week & is_peak == input$peak_bool) %>% head(5)
+top_vul <- v_df %>% arrange(desc(avg_score)) %>% 
+  filter(day_type == input$day_of_week &
+           is_peak == input$peak_bool &
+           weather_condition == input$weather_condn) %>% head(5)
 ##############################################################################################################################
 
 ####################################Connectivity map####################################
@@ -396,8 +411,8 @@ add_data_c <- read.csv("final_score.csv") %>%
   mutate(Reachable_Stations = gsub("MRT STATION", "", Reachable_Stations)) %>% #remove the string "MRT STATION"
   mutate(Reachable_Stations = gsub("\\(.*?\\)", "", Reachable_Stations)) %>% #remove everything in paranthesis, including the paranthesis
   mutate(Reachable_Stations = lapply(lapply(strsplit(Reachable_Stations, "/"),trimws),unique)) %>% #convert to list. remove all white space, and keep the unique results only. have to convert to list to use unique
-  mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>%
-  mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% 
+  mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>% #add a dash and a break behind each station for readability purposes
+  mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% #make entries more readable for humans. to be used in the pop up later 
   select(stations, Reachable_Stations, join_station) #to prevent issues when joining later, only take relevant cols
 
 
@@ -426,7 +441,7 @@ connect_data<-c_df %>%
     across(stationcode_w_colour, ~paste(., collapse = " ")),
     across(c(latitude, longitude, mrt_score, bus_score, walk_score), ~mean(.)),
     across(c(colour, Reachable_Stations), ~first(.))
-    )%>%
+    )%>% 
   ungroup() %>% 
   mutate(Score = as.numeric(Score)*5) %>%
   mutate(quantile = cut(Score, breaks = quantile(Score, probs = seq(0, 1, 1/3), na.rm = TRUE),
@@ -441,7 +456,6 @@ connect_data<-c_df %>%
 
 
 c_df <- connect_data%>% select(station_code, stations, latitude, longitude, mrt_score, bus_score, walk_score, Score)
-input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1))
 
 
 ###initialise the bot 5 least connected stations. 
@@ -452,13 +466,9 @@ least_connected <- c_df %>%
   arrange(Score, stations) %>%
   mutate(Score= round(Score,2))
 
-most_vulnerable <- v_df %>%
-  na.omit() %>% 
-  group_by(stations, station_code) %>% 
-  summarize(mean_score = mean(avg_score), 
-            across(vul_category, ~first(.))) %>%
-  arrange(desc(mean_score), stations) %>%
-  mutate(avg_score = round(mean_score,2))
+
+##initialise with weather condition as fair, or the map will update as soon as you click a button
+vulmap_data_init <- vul_data %>% filter(weather_condition == input$weather_condn)
 
 server <- function(input, output, session) {
   
@@ -476,7 +486,7 @@ server <- function(input, output, session) {
       addPolylines(data = mrtline_df, 
                    opacity = 1, 
                    color = ~line_color) %>% #add the mrt track lines
-      addCircleMarkers(data = vul_data,
+      addCircleMarkers(data = vulmap_data_init,
                        lat = ~latitude,
                        lng = ~longitude,
                        label = ~station_w_code %>% lapply(htmltools::HTML), 
@@ -542,17 +552,23 @@ server <- function(input, output, session) {
   ## Table(reactive) for TAB1 (vulnerability map)
   ################################################################################
   vulnerable_reactive_table <- eventReactive(input$update, {
-    req(input$day_of_week, input$peak_bool)
+    req(input$day_of_week, input$peak_bool, input$weather_condn)
     
     vul_data <- v_df %>%
       filter(day_type == input$day_of_week, 
-             is_peak == input$peak_bool) %>%
+             is_peak == input$peak_bool,
+             weather_condition == input$weather_condn) %>%
       arrange(desc(avg_score), stations) %>%
       head(input$top_number) %>%
       select(station_code, stations, avg_score) %>%
       mutate(avg_score = round(avg_score, 2))
     
-    rider_vul_data <- read.csv("ridership_by_stations.csv") %>%
+    ridership <- read.csv("ridership_by_stations_6months.csv") %>%
+      group_by(DAY_TYPE, is_peak, stations)%>%
+      summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>%
+      ungroup()
+    
+    rider_vul_data <- ridership %>%
       filter(DAY_TYPE == input$day_of_week, 
              is_peak == input$peak_bool) %>%
       select(stations, AVG_RIDERS) %>%
@@ -573,6 +589,8 @@ server <- function(input, output, session) {
         options = list(
           dom = 'tp', 
           pageLength = 5,
+          autoWidth = TRUE,
+          scrollX = TRUE, 
           columnDefs = list(
             list(className = 'dt-center', targets = '_all')
           )
@@ -614,6 +632,8 @@ server <- function(input, output, session) {
         options = list(
           dom = 'tp', 
           pageLength = 5,
+          autoWidth = TRUE,
+          scrollX = TRUE, 
           columnDefs = list(
             list(className = 'dt-center', targets = '_all')
           )
@@ -626,11 +646,42 @@ server <- function(input, output, session) {
   ## Table(top5 stations) for TAB3
   ################################################################################
   # Top Vulnerable stations overall
+  ridership <- read.csv("ridership_by_stations_6months.csv") %>%
+    group_by(DAY_TYPE, is_peak, stations)%>%
+    summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>%
+    ungroup() %>%
+    mutate(AVG_RIDERS = round(AVG_RIDERS))
+  
+  most_vulnerable <- v_df %>%
+    na.omit() %>% 
+    arrange(desc(avg_score), stations) %>%
+    mutate(avg_score = round(avg_score,2)) %>%
+    left_join(ridership, by= c("day_type"= "DAY_TYPE", "is_peak", "stations")) %>%
+    select(stations, station_code,line_age, day_type, is_peak, rain_fall.mm., weather_condition, AVG_RIDERS ,avg_score, vul_category) 
+    
+  
   output$top_vulnerable_table <- renderDT({
     data = most_vulnerable %>%
-      select(station_code, stations, avg_score, vul_category) %>%
+      mutate(weather_condition = case_when(
+        weather_condition == "fair" ~ "No Rain",
+        weather_condition == "moderate" ~ "Moderate Rain",
+        weather_condition == "heavy" ~ "Heavy Rain"
+      ),
+      is_peak = case_when(
+        is_peak == 1 ~ "Yes",
+        is_peak == 0 ~ "No"
+      ),
+      rain_fall.mm. = round(rain_fall.mm., 3),
+      day_type = str_to_title(day_type)
+      ) %>%
       rename("Station" = stations,
              "Station Code" = station_code,
+             "Line Age" = line_age,
+             "Day" = day_type,
+             "Peakhour" = is_peak,
+             "Rainfall(mm)" = rain_fall.mm.,
+             "Weather Condition" = weather_condition,
+             "Average Riders" = AVG_RIDERS,
              "Vulnerability Score" = avg_score,
              "Vulnerability Quantile" = vul_category
              )
@@ -638,6 +689,8 @@ server <- function(input, output, session) {
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
                 pageLength = 5,
+                autoWidth = TRUE,
+                scrollX = TRUE, 
                 lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
                 pagingType = "numbers",
                 columnDefs = list(
@@ -652,17 +705,19 @@ server <- function(input, output, session) {
     data = least_connected %>%
       mutate(walk_score = round(walk_score, 2), bus_score = round(bus_score,2)) %>%
       mutate(across(c(walk_score,bus_score), ~replace_na(.,0))) %>%
-      select(station_code, stations, Score, mrt_score, walk_score, bus_score, ) %>%
+      select(station_code, stations, Score, mrt_score, walk_score, bus_score) %>%
       rename("Station" = stations,
              "Station Code" = station_code,
              "MRT Score" = mrt_score,
              "Walk Score" = walk_score, 
-             "Bus Score" = bus_score, 
+             "Bus Score" = bus_score
              )
     datatable(data,
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
                 pageLength = 5,
+                autoWidth = TRUE,
+                scrollX = TRUE, 
                 lengthMenu = c(5, 10, 15, 20),  # Optional: allows users to change page length
                 pagingType = "numbers",  # Shows page numbers instead of simple next/previous
                 columnDefs = list(
@@ -676,11 +731,14 @@ server <- function(input, output, session) {
   #action button updates the leaflet plot (for vulnerability map)
   observeEvent(input$update, {
     ###when the parameters are input, update the top 5 most vulnerable stations 
-    top_vul <- v_df %>% arrange(desc(avg_score)) %>% filter(day_type == input$day_of_week & is_peak == input$peak_bool) %>% head(input$top_number)
+    top_vul <- v_df %>% arrange(desc(avg_score)) %>% 
+      filter(day_type == input$day_of_week & is_peak == input$peak_bool & weather_condition == input$weather_condn) %>% 
+      head(input$top_number)
+    vulmap_data <- vul_data %>%filter(weather_condition == input$weather_condn)
     leafletProxy("vulnerability_map") %>%  
       clearMarkers() %>%      # Clear previous markers
       addCircleMarkers(
-        data = vul_data,
+        data = vulmap_data,
         lat = ~latitude,
         lng = ~longitude,
         label = ~station_w_code %>% lapply(htmltools::HTML),
@@ -690,7 +748,7 @@ server <- function(input, output, session) {
         color = "black",
         radius = ~ifelse(stations %in% top_vul$stations, 6, 4),
         weight = 1.5
-      )
+      ) ##apply new markers
   })
   
   #action button updates the leaflet plot (for connectivity map)
