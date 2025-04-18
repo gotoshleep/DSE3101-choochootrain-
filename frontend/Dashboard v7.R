@@ -10,6 +10,7 @@ library(jsonlite)
 library(sf)
 library(stringr)
 library(tidyr)
+library(scales)
 
 ui <- dashboardPage(
   dashboardHeader(title = span(tagList(icon("train"), "MRT Risk Analysis Dashboard"))),
@@ -341,7 +342,7 @@ ui <- dashboardPage(
 ############################################read in and manipulate data for use################################################
 df <- st_read("sg-rail.geo.json")
 mrtline_df <- df %>% st_zm(drop = T, what = "ZM") %>% 
-  filter(st_geometry_type(.) %in% c("LINESTRING", "MULTILINESTRING")) %>%
+  filter(st_geometry_type(.) %in% c("LINESTRING", "MULTILINESTRING")) %>% ##the data set has both data for stations, and data for the lines. filter only the relevant info
   filter(grepl("Line", name, ignore.case = TRUE))
 #https://github.com/cheeaun/railrouter-sg/blob/master/src/sg-rail.geo.json
 #thank you train nerd ily 
@@ -361,7 +362,7 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
     vul_category == "Medium" ~ "<span style=\"color:#F8B324;\"><b>Medium</b></span>",
     vul_category == "High" ~ "<span style=\"color:#EB442C;\"><b>High</b></span>",
     vul_category == "Very High" ~ "<span style=\"color:#BC2023;\"><b>Very High</b></span>"
-  )) %>%
+  )) %>% #give the categories colour 
   mutate(colour = case_when(
     line_code == "CCL" ~ "orange",
     line_code == "TEL" ~ "saddlebrown",
@@ -377,7 +378,6 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
                              "<br>Weekday Peak: ", WEEKDAY1, 
                              "<br>Weekend/Holiday Offpeak: ", `WEEKENDS/HOLIDAY0`,
                              "<br>Weekend/Holiday Peak: ", `WEEKENDS/HOLIDAY1`
-
   )) %>% #create data for the pop up
   left_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data 
   select(-WEEKDAY0, -WEEKDAY1, -`WEEKENDS/HOLIDAY0`, -`WEEKENDS/HOLIDAY1` ) %>%
@@ -391,11 +391,11 @@ vul_data<-v_df %>% arrange(stations, day_type,is_peak) %>% ## ensure that it is 
     across(station_code, ~paste(., collapse = "/")),
     across(information, ~paste(., collapse = "<br>")),
     across(stationcode_w_colour, ~paste(., collapse = " "))
-  ) %>% ##combine interchanges
+  ) %>% ##combine interchanges so that hovering over provides the details of all lines in the station, not just one 
   mutate(station_w_code = paste(stationcode_w_colour, stations))
 
 v_df <- left_join(x=v_df, y = latlng_data, by = "station_code") #add lat long data to vulnerability data
-input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1), weather_condn = c("fair"))
+input <- data.frame(day_of_week = c("WEEKDAY"), peak_bool = c(1), weather_condn = c("fair")) #initialise input variables 
 
 ###initialise the top 5 most vulnerable stations. 
 top_vul <- v_df %>% arrange(desc(avg_score)) %>% 
@@ -405,27 +405,24 @@ top_vul <- v_df %>% arrange(desc(avg_score)) %>%
 ##############################################################################################################################
 
 ####################################Connectivity map####################################
-add_data_c <- read.csv("final_score.csv") %>%
-  select(-line_code, -line_number, -line) %>%
+c_df <- read.csv("score_final.csv") %>%
   group_by(stations)%>%
-  summarise(
-    across(station_code, ~paste(., collapse = "/")),
-    across(-station_code, ~first(.)),
-  ) %>%
   mutate(Reachable_Stations = gsub("MRT STATION", "", Reachable_Stations)) %>% #remove the string "MRT STATION"
   mutate(Reachable_Stations = gsub("\\(.*?\\)", "", Reachable_Stations)) %>% #remove everything in paranthesis, including the paranthesis
   mutate(Reachable_Stations = lapply(lapply(strsplit(Reachable_Stations, "/"),trimws),unique)) %>% #convert to list. remove all white space, and keep the unique results only. have to convert to list to use unique
   mutate(Reachable_Stations = sapply(Reachable_Stations, paste, collapse = "<br>- ")) %>% #add a dash and a break behind each station for readability purposes
   mutate(Reachable_Stations = str_to_title(tolower(Reachable_Stations))) %>% #make entries more readable for humans. to be used in the pop up later 
-  select(stations, Reachable_Stations, join_station) #to prevent issues when joining later, only take relevant cols
+  mutate(Score=score) %>% 
+  select(-score) %>%
+  ungroup() %>%
+  mutate(across(c(walk_score,bus_score), ~replace_na(.,0))) %>%
+  mutate(across(c(walk_score, bus_score), ~ . / max(.)))
 
 
-c_df <- read.csv("score_final.csv") %>% mutate(Score=score) %>% select(-score)
+
 
 connect_data<-c_df %>%
-  select(station_code, stations, Score, line_code, mrt_score, bus_score, walk_score) %>%
   inner_join(y = latlng_data, by = "station_code") %>% #add lat long data to vulnerability data
-  inner_join(y= add_data_c, by = "stations") %>%
   mutate(colour = case_when(
     line_code == "CCL" ~ "orange",
     line_code == "TEL" ~ "saddlebrown",
@@ -438,16 +435,16 @@ connect_data<-c_df %>%
   group_by(stations) %>% 
   mutate(stationcode_w_colour = 
            paste0("<span style=\"color:white; background-color:",colour,";border-radius: 8px; padding: 1px 4px;\">",
-                  station_code,"</span> ")) %>%
+                  station_code,"</span> ")) %>% #give stations codes colour and shape
   summarize(
     Score = mean(Score),
     across(station_code, ~paste(., collapse = "/")),
     across(stationcode_w_colour, ~paste(., collapse = " ")),
     across(c(latitude, longitude, mrt_score, bus_score, walk_score), ~mean(.)),
     across(c(colour, Reachable_Stations), ~first(.))
-    )%>% 
+    )%>%  #collapse 
   ungroup() %>% 
-  mutate(Score = as.numeric(Score)*5) %>%
+  mutate(Score = as.numeric(Score)) %>%
   mutate(quantile = cut(Score, breaks = quantile(Score, probs = seq(0, 1, 1/3), na.rm = TRUE),
                         labels = c("<span style=\"color:#cd2626;\">Low Connectivity</span>", "<span style=\"color:goldenrod;\">Average Connectivity</span>", "<span style=\"color:forestgreen;\">High Connectivity</span>"), 
                         include.lowest = TRUE))%>%
@@ -519,10 +516,10 @@ server <- function(input, output, session) {
                        label = ~station_w_code %>% lapply(htmltools::HTML), 
                        popup = ~information,
                        fillOpacity = 1,
-                       fillColor = ~ifelse(stations %in% bot5_connect$stations , "red","white"),
+                       fillColor = ~ifelse(stations %in% bot5_connect$stations , "red","white"), #if stations is bottom 5 connecvity, change colour to red
                        opacity = 1, 
                        color = "black", 
-                       radius = ~ifelse(stations %in% bot5_connect$stations, 6,4), 
+                       radius = ~ifelse(stations %in% bot5_connect$stations, 6,4), #and make it larger
                        weight = 1.5 #controls the width of outer circle
       ) 
   })
@@ -564,15 +561,15 @@ server <- function(input, output, session) {
              weather_condition == input$weather_condn) %>%
       arrange(desc(avg_score), stations) %>%
       head(input$top_number) %>%
-      select(station_code, stations, avg_score) %>%
-      mutate(avg_score = round(avg_score, 2))
+      select(station_code, stations, avg_score) %>% #only select stations of interest
+      mutate(avg_score = round(avg_score, 2)) #round numbers so that they are more readable
     
-    ridership <- read.csv("ridership_by_stations_6months.csv") %>%
+    ridership <- read.csv("ridership_by_stations_6months.csv") %>% 
       group_by(DAY_TYPE, is_peak, stations)%>%
-      summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>%
+      summarise(AVG_RIDERS = mean(AVG_RIDERS)) %>% #average the number of riders at the station
       ungroup() 
     
-    rider_vul_data <- ridership %>%
+    rider_vul_data <- ridership %>% ##ridership data is only segregated by day of week and peak hour or not, does not account for weather condition. so there is not need filter by weather cond
       filter(DAY_TYPE == input$day_of_week, 
              is_peak == input$peak_bool) %>%
       select(stations, AVG_RIDERS) %>%
@@ -582,7 +579,7 @@ server <- function(input, output, session) {
       rename("Station Code" = station_code,
              "Station" = stations,
              "Vulnerability Score" = avg_score,
-             "Avg Riders" = AVG_RIDERS) %>%
+             "Avg Riders" = AVG_RIDERS) %>% ##join with original data to display average riders, and rename columns to be more readable
       arrange(desc(`Vulnerability Score`)) %>%
       unique()
   }, ignoreNULL = FALSE)
@@ -593,8 +590,8 @@ server <- function(input, output, session) {
         options = list(
           dom = 'tp', 
           pageLength = 5,
-          autoWidth = TRUE,
-          scrollX = TRUE, 
+          autoWidth = TRUE, 
+          scrollX = TRUE, # allow scroll so that the pages do not run
           columnDefs = list(
             list(className = 'dt-center', targets = '_all')
           )
@@ -670,11 +667,11 @@ server <- function(input, output, session) {
         weather_condition == "fair" ~ "No Rain",
         weather_condition == "moderate" ~ "Moderate Rain",
         weather_condition == "heavy" ~ "Heavy Rain"
-      ),
+      ), ##rename info in rows so they are more readable 
       is_peak = case_when(
         is_peak == 1 ~ "Yes",
         is_peak == 0 ~ "No"
-      ),
+      ), # same 
       rain_fall.mm. = round(rain_fall.mm., 3),
       day_type = str_to_title(day_type)
       ) %>%
@@ -688,7 +685,7 @@ server <- function(input, output, session) {
              "Average Riders" = AVG_RIDERS,
              "Vulnerability Score" = avg_score,
              "Vulnerability Quantile" = vul_category
-             )
+             ) #rename columns headers
     datatable(data,
               options = list(
                 dom = 'tip',  # 't' for table, 'i' for information, 'p' for pagination
@@ -709,7 +706,7 @@ server <- function(input, output, session) {
     data = least_connected %>%
       mutate(walk_score = round(walk_score, 2), bus_score = round(bus_score,2)) %>%
       mutate(across(c(walk_score,bus_score), ~replace_na(.,0))) %>%
-      select(station_code, stations, Score, mrt_score, walk_score, bus_score) %>%
+      select(station_code, stations, mrt_score, walk_score, bus_score, Score) %>%
       rename("Station" = stations,
              "Station Code" = station_code,
              "MRT Score" = mrt_score,
