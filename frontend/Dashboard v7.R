@@ -177,7 +177,7 @@ ui <- dashboardPage(
             
             div(class = "tab-description", id = "analysis_desc",
                 h4(icon("chart-bar"), " Risk Analysis"),
-                p("Get a quick overview of key stations needing attention.")
+                p("Explore the Vulnerability and Connectivity rankings for all stations, along with the predictors used in the scoring model.")
             )
 
         )
