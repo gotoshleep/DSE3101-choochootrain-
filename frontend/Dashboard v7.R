@@ -614,9 +614,10 @@ server <- function(input, output, session) {
              "Station" = stations,
              "Connectivity Score" = Score)
     
-    rider_con_data <- read.csv("ridership_by_stations.csv") %>%
+    rider_con_data <- read.csv("ridership_by_stations_6months.csv") %>%
       select(stations, AVG_RIDERS) %>%
-      mutate(AVG_RIDERS = round(AVG_RIDERS))
+      group_by(stations) %>%
+      mutate(AVG_RIDERS = round(mean(AVG_RIDERS)))
     
     left_join(con_data, rider_con_data, by = c("Station" = "stations")) %>%
       group_by(`Station Code`, Station, `Connectivity Score`) %>%
