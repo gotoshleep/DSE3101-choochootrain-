@@ -58,7 +58,6 @@ To launch the dashboard locally:
 the interactive dashboard.
   - `MRT_DATA.xlsx`: This file provides the location data (longitude and latitude) for each MRT station.
   - `mrt_rainfalldf_daily.RData`: This file contains daily rainfall measurements at each MRT station.
-  - `ridership_by_stations`:
   - `ridership_by_stations_6months.csv`: This file shows the ridership data for each MRT station over the 6-month period relevant to our analysis.
   - `score_final.csv`: This file contains the connectivity scores.
   - `sg-rail.geo.json`: This file contains geographical data representing the Singapore MRT rail network. This data was sourced from https://github.com/cheeaun/railrouter-sg/blob/master/src/sg-rail.geo.json
@@ -95,6 +94,8 @@ Our team also found additional information on station and line characteristics f
 - cost: The total cost of construction for the MRT line.
 - n_lines: the number of lines services by the station
 As the Wikipedia page does not contain information on the Changi Airport Branch Line, we have manually added their information.
+
+---
 
 ### How Our Models Work: Vulnerability Model
 The vulnerability metric scores a station based on features that we have identified that could indicate potential involvements in a service disruption. These could include a train fault occurring at the station itself, a signalling fault affecting an entire line, or any other disruption that results in a delay of 30 minutes or more. We then identify the top 5 most vulnerable stations by scoring.
