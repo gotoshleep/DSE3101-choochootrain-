@@ -1,0 +1,172 @@
+"","station_code","stations","line","line_code","line_number","join_station","is_interchange","is_above_ground","operator","commencement","n_stations","length","cost","cost_per_km","n_lines"
+"1","CE1","Bayfront","Circle Line","CCL",1,"bayfront",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"2","CC1","Dhoby Ghaut","Circle Line","CCL",1,"dhobyghaut",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,3
+"3","CC2","Bras Basah","Circle Line","CCL",2,"brasbasah",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"4","CE2","Marina Bay","Circle Line","CCL",2,"marinabay",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,3
+"5","CC3","Esplanade","Circle Line","CCL",3,"esplanade",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"6","CC4","Promenade","Circle Line","CCL",4,"promenade",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"7","CC5","Nicoll Highway","Circle Line","CCL",5,"nicollhighway",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"8","CC6","Stadium","Circle Line","CCL",6,"stadium",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"9","CC7","Mountbatten","Circle Line","CCL",7,"mountbatten",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"10","CC8","Dakota","Circle Line","CCL",8,"dakota",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"11","CC9","Paya Lebar","Circle Line","CCL",9,"payalebar",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"12","CC10","MacPherson","Circle Line","CCL",10,"macpherson",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"13","CC11","Tai Seng","Circle Line","CCL",11,"taiseng",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"14","CC12","Bartley","Circle Line","CCL",12,"bartley",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"15","CC13","Serangoon","Circle Line","CCL",13,"serangoon",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"16","CC14","Lorong Chuan","Circle Line","CCL",14,"lorongchuan",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"17","CC15","Bishan","Circle Line","CCL",15,"bishan",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"18","CC16","Marymount","Circle Line","CCL",16,"marymount",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"19","CC17","Caldecott","Circle Line","CCL",17,"caldecott",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"20","CC19","Botanic Gardens","Circle Line","CCL",19,"botanicgardens",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"21","CC20","Farrer Road","Circle Line","CCL",20,"farrerroad",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"22","CC21","Holland Village","Circle Line","CCL",21,"hollandvillage",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"23","CC22","Buona Vista","Circle Line","CCL",22,"buonavista",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"24","CC23","one-north","Circle Line","CCL",23,"one-north",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"25","CC24","Kent Ridge","Circle Line","CCL",24,"kentridge",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"26","CC25","Haw Par Villa","Circle Line","CCL",25,"hawparvilla",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"27","CC26","Pasir Panjang","Circle Line","CCL",26,"pasirpanjang",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"28","CC27","Labrador Park","Circle Line","CCL",27,"labradorpark",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"29","CC28","Telok Blangah","Circle Line","CCL",28,"telokblangah",0,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,1
+"30","CC29","HarbourFront","Circle Line","CCL",29,"harbourfront",1,0,"SMRT Trains",2009-05-28,30,35.5,10.81,0.304507042253521,2
+"31","CG1","Expo","Changi Airport Branch Line","CGL",1,"expo",1,0,"SMRT Trains",2002-02-08,2,57.2,13.68,0.239160839160839,2
+"32","CG2","Changi Airport","Changi Airport Branch Line","CGL",2,"changiairport",0,0,"SMRT Trains",2002-02-08,2,57.2,13.68,0.239160839160839,1
+"33","DT1","Bukit Panjang","Downtown Line","DTL",1,"bukitpanjang",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"34","DT2","Cashew","Downtown Line","DTL",2,"cashew",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"35","DT3","Hillview","Downtown Line","DTL",3,"hillview",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"36","DT4","Hume","Downtown Line","DTL",4,"hume",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"37","DT5","Beauty World","Downtown Line","DTL",5,"beautyworld",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"38","DT6","King Albert Park","Downtown Line","DTL",6,"kingalbertpark",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"39","DT7","Sixth Avenue","Downtown Line","DTL",7,"sixthavenue",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"40","DT8","Tan Kah Kee","Downtown Line","DTL",8,"tankahkee",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"41","DT9","Botanic Gardens","Downtown Line","DTL",9,"botanicgardens",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"42","DT10","Stevens","Downtown Line","DTL",10,"stevens",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"43","DT11","Newton","Downtown Line","DTL",11,"newton",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"44","DT12","Little India","Downtown Line","DTL",12,"littleindia",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"45","DT13","Rochor","Downtown Line","DTL",13,"rochor",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"46","DT14","Bugis","Downtown Line","DTL",14,"bugis",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"47","DT15","Promenade","Downtown Line","DTL",15,"promenade",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"48","DT16","Bayfront","Downtown Line","DTL",16,"bayfront",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"49","DT17","Downtown","Downtown Line","DTL",17,"downtown",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"50","DT18","Telok Ayer","Downtown Line","DTL",18,"telokayer",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"51","DT19","Chinatown","Downtown Line","DTL",19,"chinatown",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"52","DT20","Fort Canning","Downtown Line","DTL",20,"fortcanning",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"53","DT21","Bencoolen","Downtown Line","DTL",21,"bencoolen",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"54","DT22","Jalan Besar","Downtown Line","DTL",22,"jalanbesar",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"55","DT23","Bendemeer","Downtown Line","DTL",23,"bendemeer",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"56","DT24","Geylang Bahru","Downtown Line","DTL",24,"geylangbahru",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"57","DT25","Mattar","Downtown Line","DTL",25,"mattar",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"58","DT26","MacPherson","Downtown Line","DTL",26,"macpherson",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"59","DT27","Ubi","Downtown Line","DTL",27,"ubi",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"60","DT28","Kaki Bukit","Downtown Line","DTL",28,"kakibukit",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"61","DT29","Bedok North","Downtown Line","DTL",29,"bedoknorth",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"62","DT30","Bedok Reservoir","Downtown Line","DTL",30,"bedokreservoir",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"63","DT31","Tampines West","Downtown Line","DTL",31,"tampineswest",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"64","DT32","Tampines","Downtown Line","DTL",32,"tampines",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"65","DT33","Tampines East","Downtown Line","DTL",33,"tampineseast",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"66","DT34","Upper Changi","Downtown Line","DTL",34,"upperchangi",0,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,1
+"67","DT35","Expo","Downtown Line","DTL",35,"expo",1,0,"SBS Transit",2013-12-22,35,41.9,20.7,0.494033412887828,2
+"68","EW1","Pasir Ris","East West Line","EWL",1,"pasirris",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"69","EW2","Tampines","East West Line","EWL",2,"tampines",1,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"70","EW3","Simei","East West Line","EWL",3,"simei",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"71","EW4","Tanah Merah","East West Line","EWL",4,"tanahmerah",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"72","EW5","Bedok","East West Line","EWL",5,"bedok",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"73","EW6","Kembangan","East West Line","EWL",6,"kembangan",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"74","EW7","Eunos","East West Line","EWL",7,"eunos",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"75","EW8","Paya Lebar","East West Line","EWL",8,"payalebar",1,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"76","EW9","Aljunied","East West Line","EWL",9,"aljunied",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"77","EW10","Kallang","East West Line","EWL",10,"kallang",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"78","EW11","Lavender","East West Line","EWL",11,"lavender",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"79","EW12","Bugis","East West Line","EWL",12,"bugis",1,0,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"80","EW13","City Hall","East West Line","EWL",13,"cityhall",1,0,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"81","EW14","Raffles Place","East West Line","EWL",14,"rafflesplace",1,0,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"82","EW15","Tanjong Pagar","East West Line","EWL",15,"tanjongpagar",0,0,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"83","EW16","Outram Park","East West Line","EWL",16,"outrampark",1,0,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,3
+"84","EW17","Tiong Bahru","East West Line","EWL",17,"tiongbahru",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"85","EW18","Redhill","East West Line","EWL",18,"redhill",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"86","EW19","Queenstown","East West Line","EWL",19,"queenstown",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"87","EW20","Commonwealth","East West Line","EWL",20,"commonwealth",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"88","EW21","Buona Vista","East West Line","EWL",21,"buonavista",1,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"89","EW22","Dover","East West Line","EWL",22,"dover",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"90","EW23","Clementi","East West Line","EWL",23,"clementi",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"91","EW24","Jurong East","East West Line","EWL",24,"jurongeast",1,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,2
+"92","EW25","Chinese Garden","East West Line","EWL",25,"chinesegarden",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"93","EW26","Lakeside","East West Line","EWL",26,"lakeside",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"94","EW27","Boon Lay","East West Line","EWL",27,"boonlay",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"95","EW28","Pioneer","East West Line","EWL",28,"pioneer",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"96","EW29","Joo Koon","East West Line","EWL",29,"jookoon",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"97","EW30","Gul Circle","East West Line","EWL",30,"gulcircle",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"98","EW31","Tuas Crescent","East West Line","EWL",31,"tuascrescent",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"99","EW32","Tuas West Road","East West Line","EWL",32,"tuaswestroad",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"100","EW33","Tuas Link","East West Line","EWL",33,"tuaslink",0,1,"SMRT Trains",1987-12-12,35,57.2,13.68,0.239160839160839,1
+"101","NE1","HarbourFront","North East Line","NEL",1,"harbourfront",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,2
+"102","NE3","Outram Park","North East Line","NEL",3,"outrampark",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,3
+"103","NE4","Chinatown","North East Line","NEL",4,"chinatown",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,2
+"104","NE5","Clarke Quay","North East Line","NEL",5,"clarkequay",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"105","NE6","Dhoby Ghaut","North East Line","NEL",6,"dhobyghaut",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,3
+"106","NE7","Little India","North East Line","NEL",7,"littleindia",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,2
+"107","NE8","Farrer Park","North East Line","NEL",8,"farrerpark",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"108","NE9","Boon Keng","North East Line","NEL",9,"boonkeng",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"109","NE10","Potong Pasir","North East Line","NEL",10,"potongpasir",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"110","NE11","Woodleigh","North East Line","NEL",11,"woodleigh",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"111","NE12","Serangoon","North East Line","NEL",12,"serangoon",1,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,2
+"112","NE13","Kovan","North East Line","NEL",13,"kovan",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"113","NE14","Hougang","North East Line","NEL",14,"hougang",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"114","NE15","Buangkok","North East Line","NEL",15,"buangkok",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"115","NE16","Sengkang","North East Line","NEL",16,"sengkang",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"116","NE17","Punggol","North East Line","NEL",17,"punggol",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"117","NE18","Punggol Coast","North East Line","NEL",18,"punggolcoast",0,0,"SBS Transit",2003-06-20,17,21.6,4.72,0.218518518518519,1
+"118","NS1","Jurong East","North South Line","NSL",1,"jurongeast",1,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"119","NS2","Bukit Batok","North South Line","NSL",2,"bukitbatok",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"120","NS3","Bukit Gombak","North South Line","NSL",3,"bukitgombak",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"121","NS4","Choa Chu Kang","North South Line","NSL",4,"choachukang",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"122","NS5","Yew Tee","North South Line","NSL",5,"yewtee",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"123","NS7","Kranji","North South Line","NSL",7,"kranji",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"124","NS8","Marsiling","North South Line","NSL",8,"marsiling",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"125","NS9","Woodlands","North South Line","NSL",9,"woodlands",1,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"126","NS10","Admiralty","North South Line","NSL",10,"admiralty",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"127","NS11","Sembawang","North South Line","NSL",11,"sembawang",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"128","NS12","Canberra","North South Line","NSL",12,"canberra",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"129","NS13","Yishun","North South Line","NSL",13,"yishun",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"130","NS14","Khatib","North South Line","NSL",14,"khatib",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"131","NS15","Yio Chu Kang","North South Line","NSL",15,"yiochukang",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"132","NS16","Ang Mo Kio","North South Line","NSL",16,"angmokio",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"133","NS17","Bishan","North South Line","NSL",17,"bishan",1,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"134","NS18","Braddell","North South Line","NSL",18,"braddell",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"135","NS19","Toa Payoh","North South Line","NSL",19,"toapayoh",0,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"136","NS20","Novena","North South Line","NSL",20,"novena",0,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"137","NS21","Newton","North South Line","NSL",21,"newton",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"138","NS22","Orchard","North South Line","NSL",22,"orchard",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"139","NS23","Somerset","North South Line","NSL",23,"somerset",0,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"140","NS24","Dhoby Ghaut","North South Line","NSL",24,"dhobyghaut",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,3
+"141","NS25","City Hall","North South Line","NSL",25,"cityhall",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"142","NS26","Raffles Place","North South Line","NSL",26,"rafflesplace",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,2
+"143","NS27","Marina Bay","North South Line","NSL",27,"marinabay",1,0,"SMRT Trains",1987-11-07,27,45,13.68,0.304,3
+"144","NS28","Marina South Pier","North South Line","NSL",28,"marinasouthpier",0,1,"SMRT Trains",1987-11-07,27,45,13.68,0.304,1
+"145","TE1","Woodlands North","Thomson East Coast Line","TEL",1,"woodlandsnorth",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"146","TE2","Woodlands","Thomson East Coast Line","TEL",2,"woodlands",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,2
+"147","TE3","Woodlands South","Thomson East Coast Line","TEL",3,"woodlandssouth",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"148","TE4","Springleaf","Thomson East Coast Line","TEL",4,"springleaf",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"149","TE5","Lentor","Thomson East Coast Line","TEL",5,"lentor",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"150","TE6","Mayflower","Thomson East Coast Line","TEL",6,"mayflower",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"151","TE7","Bright Hill","Thomson East Coast Line","TEL",7,"brighthill",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"152","TE8","Upper Thomson","Thomson East Coast Line","TEL",8,"upperthomson",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"153","TE9","Caldecott","Thomson East Coast Line","TEL",9,"caldecott",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,2
+"154","TE11","Stevens","Thomson East Coast Line","TEL",11,"stevens",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,2
+"155","TE12","Napier","Thomson East Coast Line","TEL",12,"napier",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"156","TE13","Orchard Boulevard","Thomson East Coast Line","TEL",13,"orchardboulevard",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"157","TE14","Orchard","Thomson East Coast Line","TEL",14,"orchard",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,2
+"158","TE15","Great World","Thomson East Coast Line","TEL",15,"greatworld",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"159","TE16","Havelock","Thomson East Coast Line","TEL",16,"havelock",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"160","TE17","Outram Park","Thomson East Coast Line","TEL",17,"outrampark",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,3
+"161","TE18","Maxwell","Thomson East Coast Line","TEL",18,"maxwell",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"162","TE19","Shenton Way","Thomson East Coast Line","TEL",19,"shentonway",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"163","TE20","Marina Bay","Thomson East Coast Line","TEL",20,"marinabay",1,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,3
+"164","TE22","Gardens by The Bay","Thomson East Coast Line","TEL",22,"gardensbythebay",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"165","TE23","Tanjong Rhu","Thomson East Coast Line","TEL",23,"tanjongrhu",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"166","TE24","Katong Park","Thomson East Coast Line","TEL",24,"katongpark",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"167","TE25","Tanjong Katong","Thomson East Coast Line","TEL",25,"tanjongkatong",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"168","TE26","Marine Parade","Thomson East Coast Line","TEL",26,"marineparade",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"169","TE27","Marine Terrace","Thomson East Coast Line","TEL",27,"marineterrace",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"170","TE28","Siglap","Thomson East Coast Line","TEL",28,"siglap",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1
+"171","TE29","Bayshore","Thomson East Coast Line","TEL",29,"bayshore",0,0,"SMRT Trains",2020-01-31,27,40.6,28,0.689655172413793,1

@@ -1,0 +1,110 @@
+Start_Station,End_Station,Total_Distance_m,Total_Time_minutes
+bayfront,downtown,1062,17
+bayfront,marina bay,955,15
+bayfront,raffles place,1409,23
+bencoolen,bras basah,355,5
+bencoolen,bugis,932,15
+bencoolen,city hall,1030,17
+bencoolen,dhoby ghaut,586,9
+bencoolen,esplanade,953,15
+bencoolen,fort canning,1316,21
+bencoolen,jalan besar,1092,18
+bencoolen,little india,1343,22
+bencoolen,rochor,870,14
+bendemeer,boon keng,940,15
+bendemeer,farrer park,1363,22
+bendemeer,kallang,1392,23
+bendemeer,lavender,884,14
+boon lay,pioneer,1080,18
+braddell,caldecott,1321,22
+braddell,toa payoh,1071,17
+bras basah,bugis,899,14
+bras basah,city hall,707,11
+bras basah,dhoby ghaut,666,11
+bras basah,esplanade,632,10
+bras basah,fort canning,1306,21
+bras basah,rochor,1057,17
+bright hill,mayflower,2201,36
+bright hill,upper thomson,1378,22
+buangkok,sengkang,1050,17
+bugis,city hall,1098,18
+bugis,esplanade,936,15
+bugis,jalan besar,722,12
+bugis,nicoll highway,1188,19
+bugis,promenade,1100,18
+bugis,rochor,569,9
+buona vista,commonwealth,1151,19
+buona vista,holland village,1161,19
+buona vista,one-north,1092,18
+cashew,hillview,1042,17
+chinatown,clarke quay,565,9
+chinatown,fort canning,1258,20
+chinatown,maxwell,602,10
+chinatown,outram park,764,12
+chinatown,raffles place,1201,20
+chinatown,tanjong pagar,1214,20
+chinatown,telok ayer,683,11
+city hall,clarke quay,1087,18
+city hall,esplanade,379,6
+city hall,fort canning,1309,21
+city hall,promenade,1108,18
+clarke quay,fort canning,767,12
+clarke quay,maxwell,1100,18
+clarke quay,raffles place,1016,16
+clarke quay,telok ayer,1006,16
+dakota,mountbatten,789,13
+dhoby ghaut,fort canning,1000,16
+dhoby ghaut,little india,1699,28
+dhoby ghaut,rochor,1270,21
+dhoby ghaut,somerset,837,13
+downtown,marina bay,560,9
+downtown,raffles place,710,11
+downtown,shenton way,409,6
+downtown,tanjong pagar,1137,18
+downtown,telok ayer,612,10
+esplanade,promenade,785,13
+expo,upper changi,1265,21
+farrer park,jalan besar,1109,18
+farrer park,little india,1234,20
+farrer park,rochor,1552,25
+farrer road,tan kah kee,1562,26
+gardens by the bay,marina south pier,2108,35
+great world,havelock,895,14
+great world,somerset,1410,23
+havelock,tiong bahru,1029,17
+hillview,hume,975,16
+jalan besar,lavender,1047,17
+jalan besar,little india,903,15
+jalan besar,rochor,443,7
+kent ridge,one-north,1237,20
+labrador park,telok blangah,923,15
+lavender,nicoll highway,1133,18
+little india,rochor,1024,17
+lorong chuan,serangoon,1083,18
+macpherson,mattar,1074,17
+macpherson,tai seng,1147,19
+marina bay,marina south pier,1598,26
+marina bay,raffles place,1234,20
+marina bay,shenton way,932,15
+marina bay,telok ayer,1146,19
+marine parade,tanjong katong,1215,20
+marymount,upper thomson,1135,18
+maxwell,outram park,808,13
+maxwell,raffles place,1337,22
+maxwell,shenton way,1389,23
+maxwell,tanjong pagar,640,10
+maxwell,telok ayer,819,13
+mountbatten,stadium,1345,22
+napier,orchard boulevard,916,15
+nicoll highway,promenade,1333,22
+orchard,orchard boulevard,1051,17
+orchard,somerset,1061,17
+outram park,tanjong pagar,1199,19
+potong pasir,woodleigh,952,15
+raffles place,shenton way,881,14
+raffles place,telok ayer,571,9
+shenton way,tanjong pagar,1102,18
+shenton way,telok ayer,680,11
+simei,upper changi,1241,20
+stadium,tanjong rhu,2739,45
+tanjong pagar,telok ayer,787,13
