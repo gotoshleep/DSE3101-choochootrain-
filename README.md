@@ -75,7 +75,7 @@ The collection of raw data involved compiling various datasets from different so
 
 ### Pre-Processing 
 #### MRT Stations Masterlist
-The PropertyReview website contains the full list of all 251 MRT and LRT station names and codes in Singapore.
+From the PropertyReview website, we filtered out any stations that have not been constructed yet, added MRT stations that were left out and filtered out LRT stations.
 After filtering and cleaning our dataset, we are left with 143 unique MRT stations. The **stations** dataframe itself contains 171 rows of data, as it counts interchange stations as a separate observation with a different line and station code. 
 The station code, station name and line name were directly extracted from the Property Review website. These variables have been renamed to station_code, stations and line.
 Additional variables that have been added to the data include:
@@ -94,6 +94,21 @@ Our team also found additional information on station and line characteristics f
 - cost: The total cost of construction for the MRT line.
 - n_lines: the number of lines services by the station
 As the Wikipedia page does not contain information on the Changi Airport Branch Line, we have manually added their information.
+
+#### Ridership Data
+- Sourced from **LTA DataMall's Passenger Volume by Train Stations**.
+- Hourly tap-in/out volumes (Dec 2023-Feb 2024, Dec 2024-Feb 2025)
+- Peak periods identified (6-9am, 4-8pm)
+- Interchange station volumes proportionally distributed
+
+#### Rainfall Data
+- Data was pulled from Data.gov.sg
+- 5-minute interval data mapped to nearest MRT stations
+- Harvensine distance used for weather station allocation
+
+#### Breakdown Notices
+- Scraped from telegram chatbot that directly references X’s official account, which SMRT uses to disseminate information
+- NLP processing with Bing sentiment analysis to identify incidents
 
 ---
 
