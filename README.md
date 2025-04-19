@@ -15,8 +15,7 @@ This project aims to identify which MRT stations require the most attention when
    git clone https://github.com/gotoshleep/DSE3101-choochootrain-.git
 3. Open the project folder in RStudio.
 4. Install these packages by running the following command in the console:
-   install.packages(c("shiny", "shinydashboard", "dplyr", "ggplot2", "DT", "readlxl", "leaflet", "httr", "jsonlite", "sf", "stringr", "tidyr"))
-
+   install.packages(c("shiny", "shinydashboard", "dplyr", "ggplot2", "DT", "readlxl", "leaflet", "httr", "jsonlite", "sf", "stringr", "tidyr", "tidyverse", "rvest", "stringr", "jsonlite", "geosphere", "lubridate","tidytext","chron","future.apply","progressr","xml2","writexl","xgboost","Matrix","caret","randomForest","e1071"))
 ---
   
 ### Run the App Locally
