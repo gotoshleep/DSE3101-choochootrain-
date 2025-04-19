@@ -57,12 +57,12 @@ To launch the dashboard locally:
   - `Dashboard v7.R`: This is the main Shiny UI and server file that powers
 the interactive dashboard.
   - `MRT_DATA.xlsx`: This file provides the location data (longitude and latitude) for each MRT station.
-  - `mrt_rainfalldf_daily.RData`:
-  - `ridership_by_stations.csv`:
-  - `ridership_by_stations_6months.csv`:
-  - `score_final.csv`:
+  - `mrt_rainfalldf_daily.RData`: This file contains daily rainfall measurements at each MRT station.
+  - `ridership_by_stations`:
+  - `ridership_by_stations_6months.csv`: This file shows the ridership data for each MRT station over the 6-month period relevant to our analysis.
+  - `score_final.csv`: This file contains the connectivity scores.
   - `sg-rail.geo.json`: This file contains geographical data representing the Singapore MRT rail network. This data was sourced from https://github.com/cheeaun/railrouter-sg/blob/master/src/sg-rail.geo.json
-  - `vul_scores_dynamic.csv`:
+  - `vul_scores_dynamic.csv`: This file contains the vulnerability scores.
 ---
   
 ### How Our Models Work, Pre-Processing Steps, Cross-Validation Steps
