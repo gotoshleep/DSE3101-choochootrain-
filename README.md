@@ -135,11 +135,11 @@ $$ 0.4 \times (\text{Is Interchange}) \times (n_{\text{lines}} - 1) $$
 The indicator variable is_interchange, representing whether a station is an interchange, is multiplied by the number of operating lines not affected by the breakdown (n_lines - 1). This is assigned the highest weight of 0.4 as it is a convenient and efficient way for commuters to continue their journey to alternative stations.
 
 2. 
-$$ 0.25 \times \sum_{i=1}^{n} \log(15 / \text{Walking Time}_i + 1) $$
+$$ 0.25 \times \sum_{i=1}^{n} \log(15 / \text{Walking Time} + 1) $$
 
 A walkable station has been defined as one reachable within 15 minutes or less of walking time. We take the log fraction of maximum walking time (15 min) over the actual walking time (walking_time) and sum it over the number of walkable stations (n). A log scale has been used to penalise longer walking times. A lower weight of 0.25 has been assigned to this factor to account for individuals with mobility issues who may find such connection methods challenging. As walking time increases, the score increases by less as longer walking durations are less desirable.
 
 3.
-$$ 0.35 \times \sum_{j=1}^{k} \log(\text{Number of Bus Services}_j + 1) $$
+$$ 0.35 \times \sum_{j=1}^{k} \log(\text{Number of Bus Services} + 1) $$
 
 The sum of the total number of bus services (n_bus_services) at each bus stop (total number of bus stops = k) surrounding the MRT station. Here, we use a log scale to capture diminishing returns where each additional bus service to another MRT station improves connectivity, but each extra one contributes less than the last. A moderate weight of 0.35 has been assigned to this metric as utilising bus services is not as convenient as a direct transfer, but is more accommodating for individuals with mobility issues.
