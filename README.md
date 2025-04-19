@@ -10,12 +10,13 @@ This project aims to identify which MRT stations require the most attention when
 
 ### Setup Instructions
 
-1. Install R and RStudio.
+1. Install R and RStudio, Python.
 2. Clone this repository:
    git clone https://github.com/gotoshleep/DSE3101-choochootrain-.git
 3. Open the project folder in RStudio.
 4. Install these packages by running the following command in the console:
    install.packages(c("shiny", "shinydashboard", "dplyr", "ggplot2", "DT", "readlxl", "leaflet", "httr", "jsonlite", "sf", "stringr", "tidyr", "tidyverse", "rvest", "stringr", "jsonlite", "geosphere", "lubridate","tidytext","chron","future.apply","progressr","xml2","writexl","xgboost","Matrix","caret","randomForest","e1071"))
+5. To run `onemapapi data pull.IPYNB` , register an account with OneMap API: https://www.onemap.gov.sg/apidocs/register and enter your email and password in the code to generate your API key
 ---
   
 ### Run the App Locally
@@ -31,30 +32,21 @@ To launch the dashboard locally:
 
 ### Descriptions of Folders and Files
   
-- **`Raw Data/`**: This folder contains the raw datasets used.
-  - `2017-march2025 mrt updates.html`:
-  - `LTA MRT Station Exit (GEOJSON).geojson`:
-  - `bus_route.json`:
-  - `bus_stops.json`:
-  - `rainfall_data.zip`:
-  - `station_data.json`:
-  - `transport_node_train_20232024collated.csv`:
 
-- **`backend/`**: This folder contains the R scripts that handle the processing of raw data and model building.
-  - `DSE3101 Project.Rmd`:
-  - `bus_score.csv`:
-  - `connectivity_score.csv`:
-  - `mrt_score.csv`:
-  - `mrt_stations`:
-  - `score.csv`:
-  - `score_final.csv`:
-  - `vulnerability_cleaning`:
-  - `vulnerability_model`:
-  - `walk_score.csv`:
+- **`Backend/`**: This folder contains the R scripts that handle the processing of raw data and model building.
+  - `vul_model_dynamic.R`: used for modelling vulnerability score for the dynamic model
+  - `breakdown cleaning.RMD`: used for cleaning telegram breakdown messages and produce df referenced in vul_model_static.R
+  - `mrt_final.RMD`: used to generate mrt masterlist, rainfall and ridership
+  - `vul_model_static.R`: used for modeeling vulnerability score for static model
+  - `mrt_final_6_months.RMD`:  used to generate mrt masterlist, rainfall and ridership in 6 months
+  - `breakdown cleaning 6 months.RMD`: used to produce df referenced in vul_model_dynamic.R
+  - `connectivity.RMD`: used to produce df for connectivity scores
+  - `onemapapi data pull.IPYNB`: MRT, bus stop coordinates and MRT to MRT walking path
+  - `rainfall data.IPYNB`: Rainfall data pull
+  - `raw_data`: contains all the data referenced for backend, also used to hold files that is sent to FE for referencing
 
 - **`frontend/`**: This folder contains the R Shiny UI and server logic that power the interactive dashboard, along with the necessary files used to build and render the application’s user interface and display the data.
-  - `Dashboard v7.R`: This is the main Shiny UI and server file that powers
-the interactive dashboard.
+  - `Dashboard v7.R`: This is the main Shiny UI and server file that powers the interactive dashboard.
   - `MRT_DATA.xlsx`: This file provides the location data (longitude and latitude) for each MRT station.
   - `mrt_rainfalldf_daily.RData`: This file contains daily rainfall measurements at each MRT station.
   - `ridership_by_stations_6months.csv`: This file shows the ridership data for each MRT station over the 6-month period relevant to our analysis.
