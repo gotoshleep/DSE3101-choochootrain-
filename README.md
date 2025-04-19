@@ -106,26 +106,30 @@ As the Wikipedia page does not contain information on the Changi Airport Branch 
 - Harvensine distance used for weather station allocation
 
 #### Breakdown Notices
-- Scraped from telegram chatbot that directly references @smrt_singapore official account on X(Twitter)
-- NLP processing with Bing sentiment analysis to identify incidents
+-  Station service disruption notices were scraped from SMRT's official X account (@SMRT_Singapore) via a Telegram bot called SG MRT UPDATES.
+-  Natural Language Processing techniques were used to clean the data. Bag of words was used to tokenise messages into a machine-readable format, before funnelling it through Bing sentiment analysis to sort for relevant breakdown messages. Fuzzy matching was used to dissect each message to identify all stations affected by a breakdown incident.
+
+#### Bus and MRT stop coordinate data
+Scraped from OneMap API. The data was cleaned and filtered for 
+- bus stops located within a walking path of ≤500m of a MRT station
+- walking paths between MRT stations to be accessible within 15 minutes of walking
+- bus routes within a 2km journey to another MRT station from any given MRT station.
+
+The above conditions were chosen to ensure that any alternative routes taken do not amount to travel times beyond the stipulated 30-minute delays resulting from service disruptions.
 
 ---
 
 ### How Our Models Work: Vulnerability Model
 The vulnerability metric scores a station based on features that we have identified that could indicate potential involvements in a service disruption. These could include a train fault occurring at the station itself, a signalling fault affecting an entire line, or any other disruption that results in a delay of 30 minutes or more. We then identify the top 5 most vulnerable stations by scoring.
 
-Clicking on the individual stations shows their vulnerability scores for different conditions: peak or off-peak, weekday or weekend/holidays, weather conditions.
-
-The interface uses an XGBoost model trained on a dynamic dataset covering 6 months worth of data (2023 December to 2024 February, and 2024 December to 2025 February). The predictors involve time-sensitive variables like hourly ridership volume, daily precipitation levels, alongside static infrastructure-related variables like line operators and cost. These variables were chosen to provide a more holistic overview of a station's vulnerability to breakdowns under specific stressors. Station service disruption notices were scraped from SMRT's official X account (@SMRT_Singapore) via a Telegram bot called SG MRT UPDATES, and Natural Language Processing techniques were used to clean the data. Bag of words was used to tokenise messages into a machine-readable format, before funnelling it through Bing sentiment analysis to sort for relevant breakdown messages. Fuzzy matching was used to dissect each message to identify all stations affected by a breakdown incident.
+The interface uses an XGBoost model trained on a dynamic dataset covering 6 months worth of data (Dec 2023-Feb 2024, Dec 2024-Feb 2025). The predictors involve time-sensitive variables like hourly ridership volume, daily precipitation levels, alongside static infrastructure-related variables like line operators and cost. These variables were chosen to provide a more holistic overview of a station's vulnerability to breakdowns under specific stressors.
 
 We found that XGBoost performed the best amongst our other models (Linear Regression, Logistic Regression, Naive Bayes and Random Forest), and selected features include line ages, peak or off-peak hours, precipitation levels, line code and ridership volume.
 
 ### How Our Models Work: Connectivity Model
 The connectivity metric scores a station based on how connected it is to other MRT stations, allowing us to gauge its ability to cope with service disruptions. This includes both direct and indirect methods of alternative travel. Direct methods include direct walking paths to alternative stations and interchange station linkages to other lines. Indirect methods include surrounding bus stops with available services to other stations. Each feature is assigned a weight based on its importance and feasibility, and a connectivity score is calculated for every station. We then extract the bottom 5 least connected stations most in need of support.
 
-Clicking on the individual stations shows their connectivity scores along with the list of reachable stations via means of walking or bus service transfers.
-
-We define a well-connected station as one that provides commuters with seamless access to alternative routes, such as bus services, accessible walking paths, and interchanges to other MRT stations. We collected nearby bus and MRT stop coordinate data as well as bus routes from OneMap API. The data was cleaned and filtered for bus stops located within a walking path of less than or equals 500 metres of a MRT station, walking paths between MRT stations to be accessible within 15 minutes of walking, as well as only considering bus routes that are within a 2km journey to another MRT station from any given MRT station. The above conditions were chosen to ensure that any alternative routes taken do not amount to travel times beyond the stipulated 30-minute delays resulting from service disruptions.
+We define a well-connected station as one that provides commuters with seamless access to alternative routes, such as bus services, accessible walking paths, and interchanges to other MRT stations.
 
 Our connectivity scoring formula is as follows:
 
