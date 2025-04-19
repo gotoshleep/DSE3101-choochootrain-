@@ -22,7 +22,6 @@ ui <- dashboardPage(
       menuItem("Vulnerability Map", tabName = "map", icon = icon("exclamation-triangle")),
       menuItem("Connectivity Map", tabName = "map2", icon = icon("project-diagram")),
       menuItem("Risk Analysis", tabName = "analysis", icon = icon("chart-bar"))
-      # ,menuItem("Important Predictors", tabname = "predictors", icon = icon("key"))
     )
   ),
   
@@ -146,7 +145,6 @@ ui <- dashboardPage(
     ),
     
     tabItems(
-      # Welcome Tab
       tabItem(
         tabName = "welcome",
         div(class = "welcome-content",
@@ -181,12 +179,7 @@ ui <- dashboardPage(
                 h4(icon("chart-bar"), " Risk Analysis"),
                 p("Get a quick overview of key stations needing attention.")
             )
-            # ,
-            # 
-            # div(class = "tab-description",
-            #     h4(icon("key"), "Important Predictors"),
-            #     p("Find out more about key variables")
-            # )
+
         )
       ),
     
@@ -338,8 +331,9 @@ ui <- dashboardPage(
 )
 )
 
-
-############################################read in and manipulate data for use################################################
+################################################################################
+## Read in and Manipulate Data
+################################################################################
 df <- st_read("sg-rail.geo.json")
 mrtline_df <- df %>% st_zm(drop = T, what = "ZM") %>% 
   filter(st_geometry_type(.) %in% c("LINESTRING", "MULTILINESTRING")) %>% ##the data set has both data for stations, and data for the lines. filter only the relevant info
