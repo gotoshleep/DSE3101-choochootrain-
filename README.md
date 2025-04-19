@@ -57,11 +57,11 @@ To launch the dashboard locally:
 
 ### Data Sources
 The collection of raw data involved compiling various datasets from different sources.
-1. [Wikipedia](https://en.wikipedia.org/wiki/Mass_Rapid_Transit_(Singapore)): Train Information: etc: train age, rail cost, rail length
-2. [LTA Datamall](): Ridership Data
+1. [Wikipedia](https://en.wikipedia.org/wiki/Mass_Rapid_Transit_(Singapore)): Rail Details (Cost of rail, Rail construction Commencement date, Opening Date of each station, Station above or below ground, Length of Rail)
+2. [LTA Datamall](https://datamall.lta.gov.sg/content/datamall/en.html): Bus Routes, Ridership per station
 3. [Data.gov](https://data.gov.sg/): Daily Rainfall
-4. [OneMap API](): Bus Routes, Walking Routes
-5. [PropertyReview](https://propertyreviewsg.com/complete-singapore-mrt-list-english-and-chinese-station-names/): List of MRT stations with station code and readable name
+4. [OneMap](https://www.onemap.gov.sg/apidocs/routing): MRT coordinates, Walkable MRT Stations, MRT nearby Bus Stops
+5. [PropertyReview](https://propertyreviewsg.com/complete-singapore-mrt-list-english-and-chinese-station-names/): Line code, Station Name, Station Code
 
 ### Pre-Processing 
 #### MRT Stations Masterlist
