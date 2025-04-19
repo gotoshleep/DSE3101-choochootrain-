@@ -135,7 +135,7 @@ $$ 0.4 \times (\text{Is Interchange}) \times (n_{\text{lines}} - 1) $$
 The indicator variable is_interchange, representing whether a station is an interchange, is multiplied by the number of operating lines not affected by the breakdown (n_lines - 1). This is assigned the highest weight of 0.4 as it is a convenient and efficient way for commuters to continue their journey to alternative stations.
 
 2. 
-$$ 0.25 \times \sum_{i=1}^{n} \log(15 \times \text{Walking Time}_i + 1) $$
+$$ 0.25 \times \sum_{i=1}^{n} \log(15 / \text{Walking Time}_i + 1) $$
 
 A walkable station has been defined as one reachable within 15 minutes or less of walking time. We take the log fraction of maximum walking time (15 min) over the actual walking time (walking_time) and sum it over the number of walkable stations (n). A log scale has been used to penalise longer walking times. A lower weight of 0.25 has been assigned to this factor to account for individuals with mobility issues who may find such connection methods challenging. As walking time increases, the score increases by less as longer walking durations are less desirable.
 
