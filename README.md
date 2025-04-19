@@ -85,6 +85,7 @@ Additional variables that have been added to the data include:
 - join_station: a standardised `station_name` variable that can be used to join with other datasets
 - is_interchange: An indicator variable with values 0 (not an interchange) and 1 (is an interchange), which is obtained by counting the number of occurrences of a station.
 - is_above_ground: An indicator variable with 1 indicating a station is above ground.
+
 Our team also found additional information on station and line characteristics from Wikipedia. The variables extracted from the web scrape are as follows:
 - operator: A character variable recording the MRT line's operator; SMRT Trains or SBS Transit
 - commencement: The start date of operation for the MRT line.
