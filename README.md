@@ -65,13 +65,42 @@ the interactive dashboard.
   - `vul_scores_dynamic.csv`: This file contains the vulnerability scores.
 
 ---
-  
+
+### Data Sources
+The collection of raw data involved compiling various datasets from different sources.
+1. [Wikipedia](https://en.wikipedia.org/wiki/Mass_Rapid_Transit_(Singapore)): Train Information: etc: train age, rail cost, rail length
+2. [LTA Datamall](): Ridership Data
+3. [Data.gov](https://data.gov.sg/): Daily Rainfall
+4. [OneMap API](): Bus Routes, Walking Routes
+5. [PropertyReview](): List of MRT stations with station code and readable name
+
+### Pre-Processing 
+#### MRT Stations Masterlist
+The PropertyReview website contains the full list of all 251 MRT and LRT station names and codes in Singapore.
+After filtering and cleaning our dataset, we are left with 143 unique MRT stations. The **stations** dataframe itself contains 171 rows of data, as it counts interchange stations as a separate observation with a different line and station code. 
+The station code, station name and line name were directly extracted from the Property Review website. These variables have been renamed to station_code, stations and line.
+Additional variables that have been added to the data include:
+- line_code: which can be extracted from the first two alpha characters in station_code and adding an "L" (standing for "Line") at the end
+- line_number: which can be extracted from the numeric digits in station_code
+- join_station: a standardised `station_name` variable that can be used to join with other datasets
+- is_interchange: An indicator variable with values 0 (not an interchange) and 1 (is an interchange), which is obtained by counting the number of occurrences of a station.
+- is_above_ground: An indicator variable with 1 indicating a station is above ground.
+Our team also found additional information on station and line characteristics from Wikipedia. The variables extracted from the web scrape are as follows:
+- operator: A character variable recording the MRT line's operator; SMRT Trains or SBS Transit
+- commencement: The start date of operation for the MRT line.
+- line_age: A numeric variable calculated as the difference between today's date and the commencement date.
+- n_stations: The number of stations along an MRT line.
+- length: The length (in kilometers) of the MRT line.
+- cost: The total cost of construction for the MRT line.
+- n_lines: the number of lines services by the station
+As the Wikipedia page does not contain information on the Changi Airport Branch Line, we have manually added their information.
+
 ### How Our Models Work: Vulnerability Model
 The vulnerability metric scores a station based on features that we have identified that could indicate potential involvements in a service disruption. These could include a train fault occurring at the station itself, a signalling fault affecting an entire line, or any other disruption that results in a delay of 30 minutes or more. We then identify the top 5 most vulnerable stations by scoring.
 
-Clicking on the individual stations shows their vulnerability scores for different conditions; peak or off-peak, weekday or weekend/holidays, weather conditions.
+Clicking on the individual stations shows their vulnerability scores for different conditions: peak or off-peak, weekday or weekend/holidays, weather conditions.
 
-The interface uses an XGBoost model trained on a dynamic dataset covering 6 months worth of data (2023 December to 2024 February, and 2024 December to 2025 February). The predictors involve time-sensitive variables like hourly ridership volume daily precipitation levels, alongside static infrastructure-related variables like line operators and cost. These variables were chosen to provide a more holistic overview of a station's vulnerability to breakdowns under specific stressors. Station service disruption notices were scraped from SMRT's official X account (@SMRT_Singapore) via a Telegram bot called SG MRT UPDATES, and Natrural Language Processing techniques were used to clean the data. Bag of words was used to tokenise messages into a machine-readable format, before funneling it through Bing sentiment analysis to sort for relevant breakdown messages. Fuzzy matching was used to disect each message to identify all stations affected by a breakdown incident.
+The interface uses an XGBoost model trained on a dynamic dataset covering 6 months worth of data (2023 December to 2024 February, and 2024 December to 2025 February). The predictors involve time-sensitive variables like hourly ridership volume, daily precipitation levels, alongside static infrastructure-related variables like line operators and cost. These variables were chosen to provide a more holistic overview of a station's vulnerability to breakdowns under specific stressors. Station service disruption notices were scraped from SMRT's official X account (@SMRT_Singapore) via a Telegram bot called SG MRT UPDATES, and Natural Language Processing techniques were used to clean the data. Bag of words was used to tokenise messages into a machine-readable format, before funnelling it through Bing sentiment analysis to sort for relevant breakdown messages. Fuzzy matching was used to dissect each message to identify all stations affected by a breakdown incident.
 
 We found that XGBoost performed the best amongst our other models (Linear Regression, Logistic Regression, Naive Bayes and Random Forest), and selected features include line ages, peak or off-peak hours, precipitation levels, line code and ridership volume.
 
@@ -82,7 +111,7 @@ Clicking on the individual stations shows their connectivity scores along with t
 
 We define a well-connected station as one that provides commuters with seamless access to alternative routes, such as bus services, accessible walking paths, and interchanges to other MRT stations. We collected nearby bus and MRT stop coordinate data as well as bus routes from OneMap API. The data was cleaned and filtered for bus stops located within a walking path of less than or equals 500 metres of a MRT station, walking paths between MRT stations to be accessible within 15 minutes of walking, as well as only considering bus routes that are within a 2km journey to another MRT station from any given MRT station. The above conditions were chosen to ensure that any alternative routes taken do not amount to travel times beyond the stipulated 30-minute delays resulting from service disruptions.
 
-Our connectivity scoring formula as follows:
+Our connectivity scoring formula is as follows:
 
 $$
 Connectivity \ Score = 0.4 \times (\text{Is} \ \text{Interchange}) \times (n_{\text{lines}} - 1) + 0.25 \times \sum_{1}^{n} \log(15 \times \text{Walking Time} + 1) + 0.35 \times \sum_{1}^{k} \log(\text{Number of Bus Services} + 1)
