@@ -25,7 +25,7 @@ To launch the dashboard locally:
 3. Open the app file located at:
    frontend/Dashboard v7.R
 4. Click Run App, or run the following command in the console:
-   shiny::runApp("frontend/Dashboard v7.R")
+   `library(shiny); runApp('Dashboard v7.R')`
 
 ---
 
