@@ -107,7 +107,7 @@ As the Wikipedia page does not contain information on the Changi Airport Branch 
 - Harvensine distance used for weather station allocation
 
 #### Breakdown Notices
-- Scraped from telegram chatbot that directly references X’s official account, which SMRT uses to disseminate information
+- Scraped from telegram chatbot that directly references @smrt_singapore official account on X(Twitter)
 - NLP processing with Bing sentiment analysis to identify incidents
 
 ---
