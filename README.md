@@ -72,7 +72,7 @@ The collection of raw data involved compiling various datasets from different so
 2. [LTA Datamall](): Ridership Data
 3. [Data.gov](https://data.gov.sg/): Daily Rainfall
 4. [OneMap API](): Bus Routes, Walking Routes
-5. [PropertyReview](): List of MRT stations with station code and readable name
+5. [PropertyReview](https://propertyreviewsg.com/complete-singapore-mrt-list-english-and-chinese-station-names/): List of MRT stations with station code and readable name
 
 ### Pre-Processing 
 #### MRT Stations Masterlist
