@@ -767,9 +767,6 @@ server <- function(input, output, session) {
       )
   })
   
-  output$data_table <- renderTable({
-    data()  # Display current data
-  })
 }
 
 shinyApp(ui = ui, server = server)
