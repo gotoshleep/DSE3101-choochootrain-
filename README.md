@@ -109,9 +109,9 @@ As the Wikipedia page does not contain information on the Changi Airport Branch 
 -  Station service disruption notices were scraped from SMRT's official X account (@SMRT_Singapore) via a Telegram bot called SG MRT UPDATES.
 -  Natural Language Processing techniques were used to clean the data. Bag of words was used to tokenise messages into a machine-readable format, before funnelling it through Bing sentiment analysis to sort for relevant breakdown messages. Fuzzy matching was used to dissect each message to identify all stations affected by a breakdown incident.
 
-#### Bus and MRT stop coordinate data
+#### Bus and MRT Stop Coordinate Data
 Scraped from OneMap API. The data was cleaned and filtered for 
-- bus stops located within a walking path of ≤500m of a MRT station
+- bus stops located within a walking path of ≤500m of an MRT station
 - walking paths between MRT stations to be accessible within 15 minutes of walking
 - bus routes within a 2km journey to another MRT station from any given MRT station.
 
