@@ -125,7 +125,7 @@ We define a well-connected station as one that provides commuters with seamless 
 Our connectivity scoring formula is as follows:
 
 $$
-Connectivity \ Score = 0.4 \times (\text{Is} \ \text{Interchange}) \times (n_{\text{lines}} - 1) + 0.25 \times \sum_{1}^{n} \log(15 \times \text{Walking Time} + 1) + 0.35 \times \sum_{1}^{k} \log(\text{Number of Bus Services} + 1)
+Connectivity \ Score = 0.4 \times (\text{Is} \ \text{Interchange}) \times (n_{\text{lines}} - 1) + 0.25 \times \sum_{1}^{n} \log(15 / \text{Walking Time} + 1) + 0.35 \times \sum_{1}^{k} \log(\text{Number of Bus Services} + 1)
 $$
 
 
